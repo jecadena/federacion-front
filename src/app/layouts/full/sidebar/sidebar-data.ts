@@ -39,7 +39,7 @@ export const navItems: NavItem[] = [
     route: '/ui-components/tooltips',
   },
   */{
-    displayName: 'Forms',
+    displayName: 'Rooming List',
     iconName: 'solar:file-text-line-duotone',
     route: '/ui-components/forms',
   },/*

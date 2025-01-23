@@ -1,4 +1,374 @@
-<mat-card class="cardWithShadow theme-card">
+<img src="assets/images/header.jpg" alt="Header Image" style="width: 80%; height: auto;" />
+    <div class="text-left mt-3 mb-3">
+      <p>Please email to Travel Agency (Mrs. Rocio Reategui) and Organizing C. at:
+      <br><span style="color:blue;">rreategui&#64;actours.com.pe</span> and <span style="color:blue;">oc-peru&#64;fdntp.com</span></p>
+    </div>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <tr style="background-color: #cecece;">
+      <td colspan="2" class="text-left" style="border-right:1px solid #999;color: black; font-weight: 700;">FINAL ROOMING LIST</td>
+      <td colspan="2" class="text-left" style="color: black; font-weight: 700;">Please return by	<span style="color: red;background-color:transparent;">13 MAR 2025</span></td>
+    </tr>
+    <tr>
+      <td style="background-color:ghostwhite;">
+        <label for="federationName">Federation Name</label>
+      </td>
+      <td>
+        <input
+          id="federationName"
+          type="text"
+          class="form-control"
+          [(ngModel)]="federationName"
+          (ngModelChange)="updateFederationData()"
+        />
+      </td>
+      <td style="background-color:ghostwhite;">
+        <label for="country">Country</label>
+      </td>
+      <td>
+        <input
+          id="country"
+          type="text"
+          class="form-control"
+          [(ngModel)]="country"
+          (ngModelChange)="updateFederationData()"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color:ghostwhite;">
+        <label for="contactPerson">Contact Person</label>
+      </td>
+      <td>
+        <input
+          id="contactPerson"
+          type="text"
+          class="form-control"
+          [(ngModel)]="contactPerson"
+          (ngModelChange)="updateFederationData()"
+        />
+      </td>
+      <td style="background-color:ghostwhite;">
+        <label for="phoneNumber">Phone Number</label>
+      </td>
+      <td>
+        <input
+          id="phoneNumber"
+          type="text"
+          class="form-control"
+          [(ngModel)]="phoneNumber"
+          (ngModelChange)="updateFederationData()"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color:ghostwhite;">
+        <label for="emailAddress">Email Address</label>
+      </td>
+      <td>
+        <input
+          id="emailAddress"
+          type="email"
+          class="form-control"
+          [(ngModel)]="emailAddress"
+          (ngModelChange)="updateFederationData()"
+        />
+      </td>
+      <td style="background-color:ghostwhite;">
+        <label for="mobileNumber">Mobile Number</label>
+      </td>
+      <td>
+        <input
+          id="mobileNumber"
+          type="text"
+          class="form-control"
+          [(ngModel)]="mobileNumber"
+          (ngModelChange)="updateFederationData()"
+        />
+      </td>
+    </tr>
+  </table>
+  <table class="table table-bordered">
+    <tr style="background-color: #cecece;">
+      <td class="text-left" style="border-right:1px solid #999;color: black; font-weight: 700;">HOTEL</td>
+    </tr>
+    <tr>
+      <td>
+        <input
+          id="hotelName"
+          type="text"
+          class="form-control"
+          [(ngModel)]="hotelName"
+          (ngModelChange)="updateFederationData()"
+        />
+      </td>
+    </tr>
+  </table> 
+  <table class="table table-bordered mb-0">
+    <thead>
+      <tr style="background-color: #cecece !important;">
+        <td colspan="7" class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">SINGLE</td>
+      </tr>
+      <tr>
+        <th style="width:3%"></th>
+        <th style="width:7%">N°</th>
+        <th style="width:25%">Family Name</th>
+        <th style="width:26%">First Name</th>
+        <th style="width:11%">Passport #</th>
+        <th style="width:12%">Day of arrival</th>
+        <th style="width:16%">Day of departure</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of tableRows; let i = index">
+        <td>
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="removeRow(i)"
+            title="Remove row"
+          >
+            -
+          </button>
+        </td>
+        <td>
+          <input
+            [id]="'idSingle' + (i + 1)"
+            type="text"
+            class="form-control"
+            [value]="row.id"
+            readonly
+          />
+        </td>
+        <td>
+          <input
+            [id]="'familyName' + (i + 1)"
+            type="text"
+            class="form-control"
+            [(ngModel)]="row.familyName"
+          />
+        </td>
+        <td>
+          <input
+            [id]="'firstName' + (i + 1)"
+            type="text"
+            class="form-control"
+            [(ngModel)]="row.firstName"
+          />
+        </td>
+        <td>
+          <input
+            [id]="'passNumber' + (i + 1)"
+            type="text"
+            class="form-control"
+            [(ngModel)]="row.passportNumber"
+          />
+        </td>
+        <td>
+          <input
+            [id]="'dayArrival' + (i + 1)"
+            type="date"
+            class="form-control"
+            [(ngModel)]="row.dayArrival"
+          />
+        </td>
+        <td>
+          <input
+            [id]="'dayDeparture' + (i + 1)"
+            type="date"
+            class="form-control"
+            [(ngModel)]="row.dayDeparture"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    class="btn btn-info w-100 text-center text-white"
+    (click)="addRow()"
+  >
+    + ADD ROW
+  </div>
+
+  <table class="table table-bordered mt-3 mb-0">
+    <thead>
+      <tr style="background-color: #cecece !important;">
+        <td colspan="7" class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">DOUBLE / TWIN</td>
+      </tr>
+      <tr>
+        <th style="width:3%"></th>
+        <th style="width:7%">N°</th>
+        <th style="width:25%">Family Name</th>
+        <th style="width:26%">First Name</th>
+        <th style="width:11%">Passport #</th>
+        <th style="width:12%">Day of arrival</th>
+        <th style="width:16%">Day of departure</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Recorrer los bloques de filas -->
+      <ng-container *ngFor="let block of tableRows; let i = index">
+        <tr>
+          <td rowspan="2">
+            <button class="btn btn-danger btn-sm" (click)="removeBlock(i)" title="Remove block">-</button>
+          </td>
+          <td rowspan="2">
+            <input [id]="'idSingle' + (i + 1)" type="text" class="form-control" [value]="block.id" readonly />
+          </td>
+          <td>
+            <input [id]="'familyName' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.familyName" />
+          </td>
+          <td>
+            <input [id]="'firstName' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.firstName" />
+          </td>
+          <td>
+            <input [id]="'passNumber' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.passportNumber" />
+          </td>
+          <td>
+            <input [id]="'dayArrival' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayArrival" />
+          </td>
+          <td>
+            <input [id]="'dayDeparture' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayDeparture" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input [id]="'familyName2' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.familyName2" />
+          </td>
+          <td>
+            <input [id]="'firstName2' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.firstName2" />
+          </td>
+          <td>
+            <input [id]="'passNumber2' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.passportNumber2" />
+          </td>
+          <td>
+            <input [id]="'dayArrival2' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayArrival2" />
+          </td>
+          <td>
+            <input [id]="'dayDeparture2' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayDeparture2" />
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  
+  <!-- Botón para agregar nuevos bloques -->
+  <div class="btn btn-info w-100 text-center text-white" (click)="addBlock()">
+    + ADD BLOCK
+  </div>
+  
+  <table class="table table-bordered mt-3 mb-0">
+    <thead>
+      <tr style="background-color: #cecece !important;">
+        <td colspan="7" class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">TRIPLE</td>
+      </tr>
+      <tr>
+        <th style="width:3%"></th>
+        <th style="width:7%">N°</th>
+        <th style="width:25%">Family Name</th>
+        <th style="width:26%">First Name</th>
+        <th style="width:11%">Passport #</th>
+        <th style="width:12%">Day of arrival</th>
+        <th style="width:16%">Day of departure</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Recorrer los bloques de filas -->
+      <ng-container *ngFor="let block of tableTripleRows; let i = index">
+        <tr>
+          <td rowspan="3">
+            <button class="btn btn-danger btn-sm" (click)="removeTripleBlock(i)" title="Remove block">-</button>
+          </td>
+          <td rowspan="3">
+            <input [id]="'idTriple' + (i + 1)" type="text" class="form-control" [value]="block.id" readonly />
+          </td>
+          <td>
+            <input [id]="'familyName' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.familyName" />
+          </td>
+          <td>
+            <input [id]="'firstName' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.firstName" />
+          </td>
+          <td>
+            <input [id]="'passNumber' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.passportNumber" />
+          </td>
+          <td>
+            <input [id]="'dayArrival' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayArrival" />
+          </td>
+          <td>
+            <input [id]="'dayDeparture' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayDeparture" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input [id]="'familyName2' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.familyName2" />
+          </td>
+          <td>
+            <input [id]="'firstName2' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.firstName2" />
+          </td>
+          <td>
+            <input [id]="'passNumber2' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.passportNumber2" />
+          </td>
+          <td>
+            <input [id]="'dayArrival2' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayArrival2" />
+          </td>
+          <td>
+            <input [id]="'dayDeparture2' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayDeparture2" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input [id]="'familyName3' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.familyName3" />
+          </td>
+          <td>
+            <input [id]="'firstName3' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.firstName3" />
+          </td>
+          <td>
+            <input [id]="'passNumber3' + (i + 1)" type="text" class="form-control" [(ngModel)]="block.passportNumber3" />
+          </td>
+          <td>
+            <input [id]="'dayArrival3' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayArrival3" />
+          </td>
+          <td>
+            <input [id]="'dayDeparture3' + (i + 1)" type="date" class="form-control" [(ngModel)]="block.dayDeparture3" />
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  
+  <!-- Botón para agregar nuevos bloques -->
+  <div class="btn btn-info w-100 text-center text-white" (click)="addTripleBlock()">
+    + ADD TRIPLE BLOCK
+  </div> 
+  
+</div>
+
+<table class="table table-bordered mt-3 mb-0">
+    <tr>
+      <th>
+        <p>Note: </p>
+        <p class="text-danger">Important advice: We recommend to send this rooming list as soon as possible in order to have all arrangements settled with the hotel ahead of time!</p>
+      </th>
+    </tr>
+</table>
+
+<table class="table table-bordered mt-3 mb-0">
+  <tr style="background-color: #cecece !important;">
+    <td class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">
+      Organizing Committee
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Mr. Fabio Leon RAVINEZ / Ms. Antonella ZEVALLOS<br>
+      Mobile: +51-937-678658 / +51-986-638201<br>
+      E-mail:  <a href="mailto:oc-peru@fdntp.com" class="text-primary">oc-peru&#64;fdntp.com</a> / <a href="mailto:atas@fdntp.com" class="text-primary">ata&#64;fdntp.com</a> / <a href="mailto:secre@dntp.com" class="text-primary">secre&#64;dntp.com</a>
+    </td>
+  </tr>
+</table>
+
+
+
+<!-- <mat-card class="cardWithShadow theme-card">
   <mat-card-header>
     <mat-card-title class="m-b-0">Form</mat-card-title>
   </mat-card-header>
@@ -9,15 +379,12 @@
       <p>rreategui and oc-peru</p>
     </div>
 
-    <!-- Modify the table layout to 2 columns and 4 rows -->
     <mat-table [dataSource]="federationData">
-      <!-- Header row with title spanning both columns -->
       <ng-container matColumnDef="title">
         <mat-header-cell *matHeaderCellDef colspan="2">FINAL ROOMING LIST</mat-header-cell>
         <mat-cell *matCellDef="let element" colspan="2"></mat-cell>
       </ng-container>
 
-      <!-- Name of Federation -->
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef>Name of Federation</mat-header-cell>
         <mat-cell *matCellDef="let element">
@@ -25,7 +392,6 @@
         </mat-cell>
       </ng-container>
 
-      <!-- Country -->
       <ng-container matColumnDef="country">
         <mat-header-cell *matHeaderCellDef>Country</mat-header-cell>
         <mat-cell *matCellDef="let element">
@@ -33,7 +399,6 @@
         </mat-cell>
       </ng-container>
 
-      <!-- Contact Person -->
       <ng-container matColumnDef="contactPerson">
         <mat-header-cell *matHeaderCellDef>Contact Person</mat-header-cell>
         <mat-cell *matCellDef="let element">
@@ -41,7 +406,6 @@
         </mat-cell>
       </ng-container>
 
-      <!-- Phone Number -->
       <ng-container matColumnDef="phone">
         <mat-header-cell *matHeaderCellDef>Phone Number</mat-header-cell>
         <mat-cell *matCellDef="let element">
@@ -49,7 +413,6 @@
         </mat-cell>
       </ng-container>
 
-      <!-- Email Address -->
       <ng-container matColumnDef="email">
         <mat-header-cell *matHeaderCellDef>Email Address</mat-header-cell>
         <mat-cell *matCellDef="let element">
@@ -57,7 +420,6 @@
         </mat-cell>
       </ng-container>
 
-      <!-- Mobile Number -->
       <ng-container matColumnDef="mobile">
         <mat-header-cell *matHeaderCellDef>Mobile Number</mat-header-cell>
         <mat-cell *matCellDef="let element">
@@ -75,3 +437,4 @@
     </div>
   </mat-card-content>
 </mat-card>
+-->

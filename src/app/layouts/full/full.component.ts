@@ -13,6 +13,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { HeaderComponent } from './header/header.component';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -56,7 +59,12 @@ export class FullComponent implements OnInit {
     return this.isMobileScreen;
   }
 
-  constructor(private breakpointObserver: BreakpointObserver, private navService: NavService) {
+  constructor(
+    private breakpointObserver: BreakpointObserver, 
+    private navService: NavService, 
+    private http: HttpClient,
+    private router: Router
+  ) {
     
     this.htmlElement = document.querySelector('html')!;
     this.htmlElement.classList.add('light-theme');
@@ -88,4 +96,31 @@ export class FullComponent implements OnInit {
   onSidenavOpenedChange(isOpened: boolean) {
     this.isCollapsedWidthFixed = !this.isOver;
   }
+
+  logout() {
+      // Llamar al endpoint de logout
+      this.http.post(`${environment.apiUrl}/api/logout`, {}).subscribe(
+        (response) => {
+          // Eliminar el token del localStorage
+          localStorage.removeItem('token');
+          // Redirigir al login
+          this.router.navigate(['/authentication/login']);
+          
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            icon: 'success',
+            title: '¡Logout exitoso!',
+            text: 'Has cerrado sesión correctamente.',
+          });
+        },
+        (error) => {
+          console.error('Error en el logout', error);
+          Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: 'Hubo un problema al cerrar sesión.',
+          });
+        }
+      );
+    }
 }

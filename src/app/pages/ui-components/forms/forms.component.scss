@@ -1,0 +1,62 @@
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .form-group-container {
+    margin-bottom: 24px;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .form-container {
+  margin: 20px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.form-field {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.form-field:last-child {
+  margin-right: 0;
+}
+
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+/* Agregar bordes a la tabla */
+.table-bordered {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-bordered td, .table-bordered th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+/* Alinear el texto de "FINAL ROOMING LIST" a la izquierda, color negro y en negrita */
+.text-left {
+  text-align: left;
+  color: black;
+  font-weight: 700;
+}
+
+label{
+  background-color:transparent;
+}
+
+p{
+  background-color:transparent !important;
+}
