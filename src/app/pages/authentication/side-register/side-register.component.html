@@ -1,0 +1,60 @@
+<div class="blank-layout-container justify-content-center align-items-center bg-light">
+  <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
+    <div class="col-lg-6 d-flex align-items-center">
+      <mat-card class="cardWithShadow boxed-auth">
+        <mat-card-content class="p-32">
+          <div class="text-center">
+            <h2>Registro de Federación</h2>
+          </div>
+          <form [formGroup]="form" (ngSubmit)="submit()" class="m-t-30">
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-label>Nombre de Federación</mat-label>
+              <input matInput formControlName="n_federacion" />
+              <mat-error *ngIf="f.n_federacion.errors?.['required']">Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-label>País</mat-label>
+              <input matInput formControlName="n_country" />
+              <mat-error *ngIf="f.n_country.errors?.['required']">Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-label>Persona de Contacto</mat-label>
+              <input matInput formControlName="c_person" />
+              <mat-error *ngIf="f.c_person.errors?.['required']">Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-label>Número de Pasaporte</mat-label>
+              <input matInput formControlName="p_number" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email_address" />
+              <mat-error *ngIf="f.email_address.errors?.['required']">Campo requerido</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-label>Número de Teléfono</mat-label>
+              <input matInput formControlName="mobile_number" />
+              <mat-error *ngIf="f.mobile_number.errors?.['required']">Campo requerido</mat-error>
+            </mat-form-field>
+
+            <!-- Campo para la clave -->
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-label>Clave</mat-label>
+              <input matInput type="password" formControlName="clave" />
+              <mat-error *ngIf="f.clave.errors?.['required']">Campo requerido</mat-error>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" class="w-100 m-t-20" type="submit">
+              Guardar Federación
+            </button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
