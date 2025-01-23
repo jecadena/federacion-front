@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-forms',
@@ -32,6 +33,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppFormsComponent implements OnInit {
   displayedColumns: string[] = [
+    'id',
     'title',
     'name',
     'country',
@@ -47,6 +49,7 @@ export class AppFormsComponent implements OnInit {
   tableBlocks: any[] = []; // Propiedad faltante para bloques de tabla
   tableTripleRows: any[] = [];
 
+  id: string = '';
   federationName: string = '';
   country: string = '';
   contactPerson: string = '';
@@ -83,6 +86,7 @@ export class AppFormsComponent implements OnInit {
   }
 
   setFormData(data: any): void {
+    this.id = data.id || '';
     this.federationName = data.n_federacion || '';
     this.country = data.n_country || '';
     this.contactPerson = data.c_person || '';
@@ -95,6 +99,7 @@ export class AppFormsComponent implements OnInit {
   updateFederationData(): void {
     if (this.federationData.length > 0) {
       this.federationData[0] = {
+        id: this.id,
         n_federacion: this.federationName,
         n_country: this.country,
         c_person: this.contactPerson,
@@ -135,9 +140,6 @@ export class AppFormsComponent implements OnInit {
     console.log('Formulario cancelado y restablecido a los valores iniciales');
   }
 
-  /**
-   * Inicializa las filas de la tabla con datos de ejemplo.
-   */
   initializeTableRows(): void {
     this.tableRows = [
       {
@@ -151,9 +153,6 @@ export class AppFormsComponent implements OnInit {
     ];
   }
 
-  /**
-   * Inicializa los bloques de contacto con un bloque vacío.
-   */
   initializeContactBlocks(): void {
     this.contactBlocks = [
       {
@@ -166,9 +165,6 @@ export class AppFormsComponent implements OnInit {
     ];
   }
 
-  /**
-   * Inicializa los bloques de tabla con datos de ejemplo.
-   */
   initializeTableBlocks(): void {
     this.tableBlocks = [
       {
@@ -184,9 +180,6 @@ export class AppFormsComponent implements OnInit {
     ];
   }
 
-  /**
-   * Agrega un nuevo bloque de contacto.
-   */
   addContactBlock(): void {
     const newBlock = {
       id: this.contactBlocks.length + 1,
@@ -208,9 +201,7 @@ export class AppFormsComponent implements OnInit {
     }
   }
 
-  /**
-   * Agrega una nueva fila a la tabla dinámica.
-   */
+
   addRow(): void {
     const newRow = {
       id: this.tableRows.length + 1,
@@ -233,15 +224,59 @@ export class AppFormsComponent implements OnInit {
     }
   }
 
-  /**
-   * Agrega un nuevo bloque a la tabla dinámica (para ser usado en el HTML).
-   */
-  /**
- * Agrega un nuevo bloque a la tabla dinámica (para ser usado en el HTML).
- */
-/**
- * Agrega un nuevo bloque a la tabla dinámica (para ser usado en el HTML).
- */
+  guardar(): void {
+    // Recoger los valores del formulario y preparar el objeto de datos
+    const federationDataToUpdate = {
+      id: this.id,
+      n_federacion: this.federationName,
+      n_country: this.country,
+      c_person: this.contactPerson,
+      p_number: this.phoneNumber,
+      email_address: this.emailAddress,
+      mobile_number: this.mobileNumber,
+    };
+  
+    this.http.post('http://localhost:3000/api/updateFederationData', federationDataToUpdate).subscribe(
+      (response) => {
+        console.log('Federación actualizada correctamente:', response);
+        // Mostrar toast de éxito con el check animado verde
+        Swal.fire({
+          icon: 'success',
+          title: 'Federación actualizada',
+          showConfirmButton: false,
+          timer: 2000,  // Duración en milisegundos (2 segundos)
+          toast: true,
+          position: 'top-end',
+          background: '#fff',  // Fondo verde
+          color: '#28a745',  // Texto blanco
+          iconColor: '#28a745',  // Color del icono
+          customClass: {
+            popup: 'toast-popup-success'
+          }
+        });
+      },
+      (error) => {
+        console.error('Error al actualizar', error);
+        // Mostrar toast de error con la X roja
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al actualizar',
+          showConfirmButton: false,
+          timer: 2000,  // Duración en milisegundos (2 segundos)
+          toast: true,
+          position: 'top-end',
+          background: '#fff',  // Fondo rojo
+          color: '#dc3545',  // Texto blanco
+          iconColor: '#dc3545',  // Color del icono
+          customClass: {
+            popup: 'toast-popup-error'
+          }
+        });
+      }
+    );
+  }
+  
+
 addBlock(): void {
   const newBlock = {
     id: this.tableRows.length + 1,
@@ -288,9 +323,6 @@ initializeTripleRows(): void {
   ];
 }
 
-/**
- * Agrega un nuevo bloque a la tabla de tres filas.
- */
 addTripleBlock(): void {
   const newBlock = {
     id: this.tableTripleRows.length + 1,
