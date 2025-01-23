@@ -1,17 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
-
-interface Food {
-  value: string;
-  viewValue: string;
-}
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-forms',
@@ -26,34 +23,36 @@ interface Food {
     MatCardModule,
     MatInputModule,
     MatCheckboxModule,
+    MatTableModule
   ],
   templateUrl: './forms.component.html',
 })
-export class AppFormsComponent {
-  country: Food[] = [
-    { value: 'steak-0', viewValue: 'USA' },
-    { value: 'pizza-1', viewValue: 'India' },
-    { value: 'tacos-2', viewValue: 'France' },
-    { value: 'tacos-3', viewValue: 'UK' },
-  ];
+export class AppFormsComponent implements OnInit {
+  displayedColumns: string[] = ['title', 'name', 'country', 'contactPerson', 'phone', 'email', 'mobile'];
+  federationData: any[] = [];  // Array que contendrá los datos de la federación
 
-  selectedCountry = this.country[2].value;
+  constructor(private http: HttpClient) {}
 
-  city: Food[] = [
-    { value: 'steak-0', viewValue: 'Mexico' },
-    { value: 'pizza-1', viewValue: 'Mumbai' },
-    { value: 'tacos-2', viewValue: 'Tokyo' },
-    { value: 'tacos-3', viewValue: 'New York' },
-  ];
+  ngOnInit(): void {
+    // Fetch data from the backend and store it in federationData array
+    this.http.get<any>('http://localhost:3000/api/getFederationData')
+      .subscribe(data => {
+        // Asegúrate de que el dato recibido es un array
+        if (Array.isArray(data)) {
+          this.federationData = data;  // Asignamos directamente el arreglo
+        } else {
+          this.federationData = [data]; // Si no es un array, lo envolvemos en uno
+        }
+      });
+      console.log("Datos: ", this.federationData);  // Verifica que los datos se están cargando correctamente
+  }
 
-  selectedCity = this.city[1].value;
+  submitForm() {
+    console.log(this.federationData);
+    // Handle form submission logic here (e.g., POST request)
+  }
 
-  state: Food[] = [
-    { value: 'steak-0', viewValue: 'Cuba' },
-    { value: 'pizza-1', viewValue: 'Djibouti' },
-    { value: 'tacos-2', viewValue: 'Bulgaria' },
-    { value: 'tacos-3', viewValue: 'Cabo Verde' },
-  ];
-
-  selectedState = this.state[3].value;
+  cancelForm() {
+    console.log('Form canceled');
+  }
 }

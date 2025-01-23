@@ -3,71 +3,75 @@
     <mat-card-title class="m-b-0">Form</mat-card-title>
   </mat-card-header>
   <mat-card-content class="b-t-1">
-    <form>
-      <div class="row">
-        <div class="col-lg-6">
-          <!-- input -->
-          <mat-label class="f-w-600 m-b-8 d-block">Your Name</mat-label>
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput placeholder="your name " />
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Country</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select [(value)]="selectedCountry">
-              @for(option of country; track option.value) {
-              <mat-option [value]="option.value">{{
-                option.viewValue
-              }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <!-- input -->
-          <mat-label class="f-w-600 m-b-8 d-block">Email</mat-label>
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput type="email" placeholder="your email" />
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">State</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select [(value)]="selectedState">
-              @for(option of state; track option.value) {
-              <mat-option [value]="option.value">{{
-                option.viewValue
-              }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <!-- input -->
-          <mat-label class="f-w-600 m-b-8 d-block">Password</mat-label>
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput type="password" placeholder="your password" />
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">City</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select [(value)]="selectedCity">
-              @for(option of city; track option.value) {
-              <mat-option [value]="option.value">{{
-                option.viewValue
-              }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
+    <img src="assets/images/header.jpg" alt="Header Image" style="width: 80%; height: auto;" />
+    <div class="text-left mt-3 mb-3">
+      <p>Please email to Travel Agency (Mrs. Rocio Reategui) and Organizing C. at:</p>
+      <p>rreategui and oc-peru</p>
+    </div>
 
-      <div class="m-t-12">
-        <button mat-flat-button color="primary" class="m-r-8">Submit</button>
-        <button mat-stroked-button color="warn">Cancel</button>
-      </div>
-    </form>
+    <!-- Modify the table layout to 2 columns and 4 rows -->
+    <mat-table [dataSource]="federationData">
+      <!-- Header row with title spanning both columns -->
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef colspan="2">FINAL ROOMING LIST</mat-header-cell>
+        <mat-cell *matCellDef="let element" colspan="2"></mat-cell>
+      </ng-container>
+
+      <!-- Name of Federation -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name of Federation</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <input matInput [(ngModel)]="element.n_federacion" />
+        </mat-cell>
+      </ng-container>
+
+      <!-- Country -->
+      <ng-container matColumnDef="country">
+        <mat-header-cell *matHeaderCellDef>Country</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <input matInput [(ngModel)]="element.n_country" />
+        </mat-cell>
+      </ng-container>
+
+      <!-- Contact Person -->
+      <ng-container matColumnDef="contactPerson">
+        <mat-header-cell *matHeaderCellDef>Contact Person</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <input matInput [(ngModel)]="element.c_person" />
+        </mat-cell>
+      </ng-container>
+
+      <!-- Phone Number -->
+      <ng-container matColumnDef="phone">
+        <mat-header-cell *matHeaderCellDef>Phone Number</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <input matInput [(ngModel)]="element.p_number" />
+        </mat-cell>
+      </ng-container>
+
+      <!-- Email Address -->
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef>Email Address</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <input matInput [(ngModel)]="element.email_address" />
+        </mat-cell>
+      </ng-container>
+
+      <!-- Mobile Number -->
+      <ng-container matColumnDef="mobile">
+        <mat-header-cell *matHeaderCellDef>Mobile Number</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <input matInput [(ngModel)]="element.mobile_number" />
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <div class="m-t-12">
+      <button mat-flat-button color="primary" class="m-r-8" (click)="submitForm()">Submit</button>
+      <button mat-stroked-button color="warn" (click)="cancelForm()">Cancel</button>
+    </div>
   </mat-card-content>
 </mat-card>
