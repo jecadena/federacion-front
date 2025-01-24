@@ -1,0 +1,89 @@
+/* Definir el color primario como una variable de Sass */
+$primary-color: #007bff;
+
+nav > ul > li > a {
+  display: block;
+  padding: 10px 15px;
+  background-color: $primary-color; /* Usar la variable SCSS */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+nav > ul > li > a:hover {
+  background-color: darken($primary-color, 10%); /* Función darken en la variable SCSS */
+}
+
+/* Eliminar los puntos de las listas */
+ul, li {
+  list-style-type: none;  /* Elimina los puntos de las listas */
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo para el menú lateral */
+nav ul {
+  padding-left: 0;  /* Elimina el relleno de la lista */
+}
+
+/* Estilo de los ítems principales */
+nav > ul > li {
+  width: 100%; /* Ocupa todo el ancho */
+}
+
+nav > ul > li > a {
+  display: block;
+  padding: 10px 15px;
+  background-color: $primary-color; /* Fondo de color primario */
+  color: #fff; /* Texto blanco */
+  text-decoration: none;
+  border-radius: 4px;  /* Bordes redondeados */
+  transition: background-color 0.3s ease; /* Efecto de transición */
+}
+
+nav > ul > li > a:hover {
+  background-color: darken($primary-color, 10%); /* Cambio de color al pasar el ratón */
+}
+
+/* Estilo para los sub-ítems */
+nav ul ul li a {
+  background-color: #f0f0f0; /* Fondo gris */
+  color: $primary-color; /* Texto en color primario */
+  padding-left: 40px; /* Sangría */
+  padding-top:5px;
+  padding-bottom:5px;
+  font-size:0.8rem;
+}
+
+nav ul ul li a:hover {
+  background-color: #ddd; /* Cambio de fondo al pasar el ratón */
+}
+
+/* Estilo de los iconos */
+.nav-link i-tabler {
+  margin-right: 8px; /* Espacio entre el icono y el texto */
+}
+
+/* Estilo de los títulos de las secciones (navCap) */
+.nav-cap {
+  font-weight: bold;
+  padding: 8px 15px;
+  background-color: $primary-color;
+  color: #fff;
+  border-radius: 4px;
+  display: block;
+}
+
+/* Estilo para los grupos de navegación */
+.nav-group {
+  margin-top: 10px; /* Márgenes superior e inferior */
+  margin-bottom: 10px; /* Márgenes superior e inferior */
+}
+
+/* Estilo para el título de los grupos dentro de nav-group */
+.nav-group-title {
+  margin-top: 10px; /* Margen superior */
+  margin-bottom: 10px; /* Margen inferior */
+  font-weight: bold;
+}

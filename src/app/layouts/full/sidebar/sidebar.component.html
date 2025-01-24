@@ -1,10 +1,54 @@
 <div class="d-flex align-items-center justify-content-between">
-    <app-branding></app-branding>
+  <app-branding></app-branding>
 
-    @if(showToggle) {
-    <a href="javascript:void(0)" (click)="toggleMobileNav.emit()"
-        class="d-flex justify-content-center ng-star-inserted icon-40 align-items-center mat-body-1">
-        <i-tabler name="x" class="icon-20 d-flex"></i-tabler>
+  <!-- Botón de toggle para dispositivos móviles -->
+  <ng-container *ngIf="showToggle">
+    <a
+      href="javascript:void(0)"
+      (click)="toggleMobileNav.emit()"
+      class="d-flex justify-content-center ng-star-inserted icon-40 align-items-center mat-body-1"
+    >
+      <i-tabler name="x" class="icon-20 d-flex"></i-tabler>
     </a>
-    }
+  </ng-container>
 </div>
+
+<!-- Menú lateral -->
+<nav>
+  <ul>
+    <!-- Renderizar los ítems del menú -->
+    <li *ngFor="let item of navItems">
+      <!-- Si es un título de sección (navCap) -->
+      <ng-container *ngIf="item.navCap">
+        <span class="nav-cap">{{ item.navCap }}</span>
+      </ng-container>
+
+      <!-- Si es un ítem de navegación -->
+      <ng-container *ngIf="!item.navCap">
+        <a
+          [routerLink]="item.route"
+          *ngIf="!item.children || item.children.length === 0"
+          class="nav-link"
+        >
+          <i-tabler *ngIf="item.iconName" [name]="item.iconName"></i-tabler>
+          {{ item.displayName }}
+        </a>
+
+        <!-- Si el ítem tiene hijos -->
+        <div *ngIf="item.children && item.children.length > 0" class="nav-group">
+          <span class="nav-group-title">
+            <i-tabler *ngIf="item.iconName" [name]="item.iconName"></i-tabler>
+            {{ item.displayName }}
+          </span>
+          <ul>
+            <li *ngFor="let child of item.children">
+              <a [routerLink]="child.route" class="nav-link">
+                {{ child.displayName }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+    </li>
+  </ul>
+</nav>
