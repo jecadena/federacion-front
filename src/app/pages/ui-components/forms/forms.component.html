@@ -136,7 +136,7 @@
         <td>
           <a href="javascript:void(0)" (click)="removeRow(i)" title="Remove block" style="font-weight:700">
             <i class="fa-regular fa-trash-can text-danger"></i>
-          </a> 
+          </a>
         </td>
         <td>
           <input
@@ -193,8 +193,9 @@
             [(ngModel)]="row.dayDeparture"
           />
         </td>
+        <input type="hidden" [value]="row.tipo_habitacion" />
       </tr>
-    </tbody>
+    </tbody>    
   </table>
   <div
     class="btn bg-info-subtle text-bold text-primary w-100 text-center"

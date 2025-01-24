@@ -298,9 +298,11 @@ export class AppFormsComponent implements OnInit {
         passportNumber: '',
         dayArrival: '',
         dayDeparture: '',
+        tipo_habitacion: 'S', // Campo oculto
       },
     ];
   }
+  
 
   initializeContactBlocks(): void {
     this.contactBlocks = [
@@ -359,9 +361,11 @@ export class AppFormsComponent implements OnInit {
       passportNumber: '',
       dayArrival: '',
       dayDeparture: '',
+      tipo_habitacion: 'S', // Campo oculto
     };
     this.tableRows.push(newRow);
   }
+  
 
   /**
    * Elimina una fila de la tabla dinámica.
