@@ -109,16 +109,24 @@ export class FullComponent implements OnInit {
           // Mostrar mensaje de éxito
           Swal.fire({
             icon: 'success',
-            title: '¡Logout exitoso!',
-            text: 'Has cerrado sesión correctamente.',
+            title: 'You have been disconnected from the system',
+            showConfirmButton: false,
+            timer: 2000,
+            toast: true,
+            position: 'top-end',
+            width: "40%",
           });
         },
         (error) => {
           console.error('Error en el logout', error);
           Swal.fire({
             icon: 'error',
-            title: '¡Error!',
-            text: 'Hubo un problema al cerrar sesión.',
+            title: 'There was a problem logging out',
+            showConfirmButton: false,
+            timer: 2000,
+            toast: true,
+            position: 'top-end',
+            width: "auto",
           });
         }
       );

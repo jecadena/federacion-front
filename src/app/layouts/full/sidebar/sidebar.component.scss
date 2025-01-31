@@ -25,6 +25,7 @@ ul, li {
 /* Estilo para el menú lateral */
 nav ul {
   padding-left: 0;  /* Elimina el relleno de la lista */
+  font-family:Manrope;
 }
 
 /* Estilo de los ítems principales */
@@ -86,4 +87,8 @@ nav ul ul li a:hover {
   margin-top: 10px; /* Margen superior */
   margin-bottom: 10px; /* Margen inferior */
   font-weight: bold;
+}
+
+.banner-container{
+  opacity: 0.5;
 }

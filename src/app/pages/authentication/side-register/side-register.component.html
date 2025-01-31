@@ -1,57 +1,141 @@
 <div class="blank-layout-container justify-content-center align-items-center bg-light">
   <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
-    <div class="col-lg-6 d-flex align-items-center">
+    <div class="col-lg-12 d-flex align-items-center">
       <mat-card class="cardWithShadow boxed-auth">
         <mat-card-content class="p-32">
           <div class="text-center">
-            <h5>Registro de Federación</h5>
+            <h5>Federation Registration</h5>
           </div>
-          <form [formGroup]="form" (ngSubmit)="submit()" class="m-t-30">
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <mat-label>Nombre de Federación</mat-label>
-              <input matInput formControlName="n_federacion" />
-              <mat-error *ngIf="f.n_federacion.errors?.['required']">Campo requerido</mat-error>
-            </mat-form-field>
+          <form [formGroup]="formu" (ngSubmit)="submit()" class="m-t-30">
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label>Federation Name</mat-label>
+                  <input matInput formControlName="n_federacion" style="border:1px solid #116fad;"/>
+                  <mat-error *ngIf="f['n_federacion'].errors?.['required']">Required field</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label>Country</mat-label>
+                  <mat-select formControlName="n_country" (selectionChange)="onCountryChange($event.value)">
+                    <mat-option value="">[ - Select - ]</mat-option>
+                    <mat-option *ngFor="let country of countries" [value]="country.code">{{ country.name }}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="f['n_country'].errors?.['required']">Required field</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
 
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <mat-label>País</mat-label>
-              <input matInput formControlName="n_country" />
-              <mat-error *ngIf="f.n_country.errors?.['required']">Campo requerido</mat-error>
-            </mat-form-field>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100" color="primary" >
+                  <mat-label>Password</mat-label>
+                  <input matInput type="clave" formControlName="clave" />
+                  <mat-error *ngIf="f['clave'].errors?.['required']">Required field</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field appearance="outline" class="w-auto" color="primary" style="width:110px !important;">
+                  <mat-label>Code</mat-label>
+                  <input matInput formControlName="code_country" [value]="selectedCountryCode"  maxlength="6" />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label>Phone Number</mat-label>
+                  <input matInput formControlName="mobile_number" />
+                  <mat-error *ngIf="f['mobile_number'].errors?.['required']">Required field</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
 
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <mat-label>Persona de Contacto</mat-label>
-              <input matInput formControlName="c_person" />
-              <mat-error *ngIf="f.c_person.errors?.['required']">Campo requerido</mat-error>
-            </mat-form-field>
+            <div class="row">
+              <div class="col-md-12">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label>Address</mat-label>
+                  <input matInput formControlName="n_address" style="border:1px solid #116fad;"/>
+                  <mat-error *ngIf="f['n_address'].errors?.['required']">Required field</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
 
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <mat-label>Número de Pasaporte</mat-label>
-              <input matInput formControlName="p_number" />
-            </mat-form-field>
+            <div class="row mb-2">
+              <div class="col-md-6">
+                <strong class="text-primary">Hotel Options</strong>
+              </div>
+              <div class="col-md-6">
+                <strong class="text-success">Contact Information * </strong>
+              </div>
+            </div>
 
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email_address" />
-              <mat-error *ngIf="f.email_address.errors?.['required']">Campo requerido</mat-error>
-            </mat-form-field>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label class="text-primary">Hotel 1</mat-label>
+                  <mat-select formControlName="n_hotel1" (selectionChange)="checkHotelSelection()">
+                    <!-- Opción previa con valor vacío y texto "Seleccionar" -->
+                    <mat-option value="">[ - Select - ]</mat-option>
+                    <!-- Opciones dinámicas de hoteles -->
+                    <mat-option *ngFor="let hotel of hotels" [value]="hotel">{{ hotel }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                
+              </div>              
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label class="text-success">Contact Person</mat-label>
+                  <input matInput formControlName="c_person" />
+                  <mat-error *ngIf="f['c_person'].errors?.['required']">Required field</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
 
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <mat-label>Número de Teléfono</mat-label>
-              <input matInput formControlName="mobile_number" />
-              <mat-error *ngIf="f.mobile_number.errors?.['required']">Campo requerido</mat-error>
-            </mat-form-field>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label class="text-primary">Hotel 2</mat-label>
+                  <mat-select formControlName="n_hotel2" (selectionChange)="checkHotelSelection()">
+                    <mat-option value="">[ - Select - ]</mat-option>
+                    <mat-option *ngFor="let hotel of hotels" [value]="hotel">{{ hotel }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label class="text-success">Passport Number</mat-label>
+                  <input matInput formControlName="p_number" />
+                </mat-form-field>
+              </div>
+            </div>
 
-            <!-- Campo para la clave -->
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <mat-label>Clave</mat-label>
-              <input matInput type="password" formControlName="clave" />
-              <mat-error *ngIf="f.clave.errors?.['required']">Campo requerido</mat-error>
-            </mat-form-field>
-
-            <button mat-flat-button color="primary" class="w-100 m-t-20" type="submit">
-              Guardar Federación
-            </button>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label class="text-primary">Hotel 3</mat-label>
+                  <mat-select formControlName="n_hotel3" (selectionChange)="checkHotelSelection()">
+                    <mat-option value="">[ - Select - ]</mat-option>
+                    <mat-option *ngFor="let hotel of hotels" [value]="hotel">{{ hotel }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100" color="primary">
+                  <mat-label class="text-success">Email</mat-label>
+                  <input matInput formControlName="email_address" />
+                  <mat-error *ngIf="f['email_address'].errors?.['required']">Required field</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- Hotel Select Fields -->
+            <div class="row mt-2">
+              <div class="col-md-6 text-center">
+                <button mat-raised-button color="accent" (click)="return()" class="w-100">Login</button>
+              </div>
+              <div class="col-md-6 text-center">
+                <button mat-raised-button color="primary" type="submit" [disabled]="formu.invalid" class="w-100">Register</button>
+              </div>
+            </div>
           </form>
         </mat-card-content>
       </mat-card>

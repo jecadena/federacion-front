@@ -29,11 +29,12 @@
 
   <span class="flex-1-auto"></span>
 
-  
-
   <!-- --------------------------------------------------------------- -->
   <!-- profile Dropdown -->
-  <!-- --------------------------------------------------------------- -->
+  <!-- --------------------------------------------------------------- --> 
+  <!-- Muestra la información adicional si el role es USER o ADMIN -->
+  <h6 *ngIf="userRole === 'USER'" class="user-info text-primary">{{ federationName }}</h6>
+  <h6 *ngIf="userRole === 'ADMIN'" class="user-info text-primary">{{ requesterName }}</h6>
   <button
     mat-fab
     extended
@@ -48,12 +49,13 @@
       width="35"
     />
   </button>
-  <mat-menu #profilemenu="matMenu" class="topbar-dd cardWithShadow">
-    <div class="p-x-12 m-t-12">
-      <!-- Cambié este enlace para llamar al método logout() -->
-      <button mat-stroked-button color="primary" class="w-100" (click)="logout()">
-        Logout
-      </button>
-    </div>
-  </mat-menu>
+
+<mat-menu #profilemenu="matMenu" class="topbar-dd cardWithShadow">
+  <div class="p-x-12 m-t-12">
+    <button mat-stroked-button color="primary" class="w-100" (click)="logout()">
+      Logout
+    </button>
+  </div>
+</mat-menu>
+
 </mat-toolbar>

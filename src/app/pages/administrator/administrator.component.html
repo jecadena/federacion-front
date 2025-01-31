@@ -1,0 +1,43 @@
+<div class="container mt-1">
+  <figure>
+    <blockquote class="blockquote">
+      <p>Panel Administrativo</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+      Seleccione una de las <cite title="Source Title">Federaciones</cite> para ver su detalle
+    </figcaption>
+  </figure>
+    <!-- Tabla Principal -->
+    <table class="table table-striped mt-3">
+      <thead class="table-primary">
+        <tr>
+          <th></th>
+          <th>Federación</th>
+          <th>País</th>
+          <th>Contacto</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Móvil</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let federation of federations">
+          <td>
+            <i class="fa-solid fa-edit text-primary mx-1" (click)="editFederation(federation)"></i>
+            <i class="fa-solid fa-trash text-danger mx-1" (click)="deleteFederation(federation)"></i>
+          </td>
+          <td>{{ federation.n_federacion }}</td>
+          <td>{{ federation.n_country }}</td>
+          <td>{{ federation.c_person }}</td>
+          <td>{{ federation.p_number }}</td>
+          <td>{{ federation.email_address }}</td>
+          <td>{{ federation.mobile_number }}</td>
+          <td>
+            <i class="fa-solid fa-hotel text-danger" (click)="showHotels(federation.id)"></i>
+          </td>          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

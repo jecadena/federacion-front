@@ -4,16 +4,17 @@
       <mat-card class="cardWithShadow boxed-auth">
         <mat-card-content class="p-32">
           <div class="text-center">
-            <a [routerLink]="['/dashboard']">
+            <a [routerLink]="['/']">
               <img
-                src="https://actours.com.pe/adminreportes/assets/images/logotipo.png"
+                src="http://192.168.1.119:4200/assets/images/header.jpg"
                 class="align-middle m-2"
                 alt="logo"
+                width="100%"
               />
             </a>
           </div>
 
-          <div class="or-border m-t-30">Ingrese sus datos</div>
+          <div class="or-border m-t-30">Enter your details</div>
 
           <form [formGroup]="form" class="m-t-30" (ngSubmit)="submit()">
             <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Email</mat-label>
@@ -21,29 +22,29 @@
               <input matInput formControlName="email" />
             </mat-form-field>
 
-            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Clave</mat-label>
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Password</mat-label>
             <mat-form-field appearance="outline" class="w-100" color="primary">
               <input matInput type="password" formControlName="password" />
             </mat-form-field>
 
             <div class="d-flex align-items-center m-b-12">
-              <mat-checkbox color="primary">Recuerde este dispositivo</mat-checkbox>
+              <mat-checkbox color="primary">Remember me</mat-checkbox>
               <a
                 [routerLink]="['/']"
                 class="text-primary f-w-600 text-decoration-none m-l-auto f-s-14"
-                >Olvidó su clave ?</a
+                >Forgot your password?</a
               >
             </div>
-            <button mat-flat-button color="primary" class="w-100" type="submit">Ingresar</button>
+            <button mat-flat-button color="primary" class="w-100" type="submit">Log In</button>
           </form>
 
           <span class="d-block f-w-500 text-center m-t-24">
-            ¿Regístrese?
+            Not registered?
             <a
               [routerLink]="['/authentication/register']"
               class="text-decoration-none text-primary f-w-500 f-s-14"
             >
-              Cree su cuenta de Federación</a
+              Create your Federation account</a
             >
           </span>
         </mat-card-content>

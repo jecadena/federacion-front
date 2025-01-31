@@ -14,6 +14,10 @@
 </div>
 
 <!-- Menú lateral -->
+<div *ngIf="bannerImage" class="banner-container">
+  <img [src]="bannerImage" alt="Banner" class="banner-image" style="margin-left:15px; border-radius:20px;"/>
+</div>
+
 <nav>
   <ul>
     <!-- Renderizar los ítems del menú -->
@@ -47,7 +51,7 @@
               </a>
             </li>
           </ul>
-        </div>
+        </div>        
       </ng-container>
     </li>
   </ul>

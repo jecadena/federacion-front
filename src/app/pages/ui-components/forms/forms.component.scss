@@ -1,3 +1,19 @@
+.body-wrapper{
+  font-family:Manrope !important;
+  font-size:0.8rem;
+}
+.swal-wide {
+  width: 80% !important; 
+  max-width: 80% !important;
+}
+.swal2-popup .swal2-modal .swal-wide .swal2-show{
+  width: 80% !important; 
+  max-width: 80% !important;
+}
+.div:where(.swal2-container) div:where(.swal2-popup){
+  width: 80% !important; 
+  max-width: 80% !important;
+}
 .full-width {
     width: 100%;
     margin-bottom: 16px;

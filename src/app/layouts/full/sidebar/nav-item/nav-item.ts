@@ -1,8 +1,10 @@
 export interface NavItem {
+  label?: string; // Ahora es opcional
+  icon?: string; // Ahora es opcional
   displayName?: string;
   divider?: boolean;
   iconName?: string;
   navCap?: string;
   route?: string;
-  children?: NavItem[]; // Agregar esta propiedad
+  children?: NavItem[]; // Esto es importante para los submenús
 }
