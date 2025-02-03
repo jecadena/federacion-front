@@ -49,7 +49,7 @@ nav > ul > li > a:hover {
 
 /* Estilo para los sub-ítems */
 nav ul ul li a {
-  background-color: #f0f0f0; /* Fondo gris */
+  //background-color: #f0f0f0; /* Fondo gris */
   color: $primary-color; /* Texto en color primario */
   padding-left: 40px; /* Sangría */
   padding-top:5px;
@@ -78,17 +78,39 @@ nav ul ul li a:hover {
 
 /* Estilo para los grupos de navegación */
 .nav-group {
-  margin-top: 10px; /* Márgenes superior e inferior */
-  margin-bottom: 10px; /* Márgenes superior e inferior */
+  margin-top: 5px; /* Márgenes superior e inferior */
+  margin-bottom: 5px; /* Márgenes superior e inferior */
 }
 
 /* Estilo para el título de los grupos dentro de nav-group */
 .nav-group-title {
-  margin-top: 10px; /* Margen superior */
-  margin-bottom: 10px; /* Margen inferior */
+  margin-top: 5px; /* Margen superior */
+  margin-bottom: 5px; /* Margen inferior */
   font-weight: bold;
 }
 
 .banner-container{
   opacity: 0.5;
+}
+
+.sidebar-header {
+  color: var(--primary-color); /* Asumiendo que tienes una variable de color primario */
+  font-weight: bold;
+}
+
+/* Estilos para el ítem "Unconfirmed" */
+.unconfirmed-item {
+  background-color: white !important;
+  color: #4dbdae; /* Azul para el texto */
+  font-weight: bold; /* Hacer el texto más destacado */
+  border-bottom:1px dashed;
+  border-top:1px dashed;
+}
+
+.unconfirmed-item a {
+  color: blue; /* Cambiar color de enlace a azul */
+}
+
+.enlace{
+  text-decoration: none !important;
 }

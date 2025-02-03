@@ -22,4 +22,8 @@ export class NavService {
         return this.http.get<any[]>(`http://localhost:3000/api/hotels?federation_id=${federacionId}`);
       }
       
+      confirmationHotels(federacionId: string): Observable<any[]> {
+        return this.http.get<any[]>(`http://localhost:3000/api/hotelsPreview?federation_id=${federacionId}`);
+      }      
+      
 }

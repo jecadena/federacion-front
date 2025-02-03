@@ -266,6 +266,7 @@ export class AppFormsComponent implements OnInit {
   tableTripleRows: any[] = [];
 
   id: string = '';
+  nombre_hotel: string = '';
   federationName: string = '';
   country: string = '';
   contactPerson: string = '';
@@ -354,18 +355,24 @@ export class AppFormsComponent implements OnInit {
       (data) => {
         if (data && data.length > 0) {
           this.tablaFilas = data;
-          console.log(">>>>>>>>>>>>>: ", this.tablaFilas);
-          this.tableVisible = true;  // Mostrar la tabla si existen registros
+          this.nombre_hotel = data[0].nombre_hotel;
+          this.hotelName = this.nombre_hotel;
+          console.log("Nombre del hotel:", this.nombre_hotel);
+          this.tableVisible = true; 
         } else {
-          this.tableVisible = false;  // No mostrar la tabla si no hay registros
+          this.tableVisible = false; 
+          this.nombre_hotel = '';
+          this.hotelName = '';
         }
       },
       (error) => {
         console.error('Error al obtener los datos de los hoteles:', error);
-        this.tableVisible = false;  // No mostrar la tabla si hay error
+        this.tableVisible = false; 
+        this.nombre_hotel = '';
+        this.hotelName = '';
       }
     );
-  }
+  }  
   
   exportPDF() {
     const content = document.getElementById('pdfContent');

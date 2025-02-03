@@ -263,9 +263,9 @@ export class AppSideRegisterComponent implements OnInit {
       email_address: ['', [Validators.required, Validators.email]],
       mobile_number: ['', Validators.required],
       clave: ['', Validators.required],
-      n_hotel1: [''],
+      /*n_hotel1: [''],
       n_hotel2: [''],
-      n_hotel3: [''],
+      n_hotel3: [''],*/
     });
   }
 
@@ -279,7 +279,7 @@ export class AppSideRegisterComponent implements OnInit {
 
   submit() {
     // Verificar si los tres campos de hotel son iguales
-    const hotel1 = this.formu.value.n_hotel1;
+    /*const hotel1 = this.formu.value.n_hotel1;
     const hotel2 = this.formu.value.n_hotel2;
     const hotel3 = this.formu.value.n_hotel3;
 
@@ -290,7 +290,7 @@ export class AppSideRegisterComponent implements OnInit {
         text: 'You cannot select the same hotel in more than one field.',
       });
       return;
-    }
+    }*/
 
     if (this.formu.valid) {
       const formData = {

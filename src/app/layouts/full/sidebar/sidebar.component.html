@@ -19,40 +19,54 @@
 </div>
 
 <nav>
-  <ul>
-    <!-- Renderizar los ítems del menú -->
-    <li *ngFor="let item of navItems">
-      <!-- Si es un título de sección (navCap) -->
-      <ng-container *ngIf="item.navCap">
-        <span class="nav-cap">{{ item.navCap }}</span>
-      </ng-container>
+  <!-- Renderizar los ítems del menú -->
+  <div *ngIf="showAdminTable" class="nav-group">
+    <table class="table" style="font-family:Manrope;">
+      <thead>
+        <tr><th colspan="2">ADMINISTRACIÓN</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="width:20%"><i class="fas fa-bullseye ps-3"></i></td><td style="width:78%"><a class="enlace" href="/administrator">Federaciones</a></td></tr>
+        <tr><td style="width:20%"><i class="fas fa-users ps-3"></i></td><td style="width:78%">Usuarios</td></tr>
+        <tr><td style="width:20%"><i class="fas fa-file-alt ps-3"></i></td><td style="width:78%">Reportes</td></tr>
+        <tr><td style="width:20%"><i class="fas fa-file-invoice ps-3"></i></td><td style="width:78%">Facturación</td></tr>
+      </tbody>
+    </table>
+  </div> 
+<ul>
+  <li *ngFor="let item of navItems">
+    <!-- Si es un título de sección (navCap) -->
+    <ng-container *ngIf="item.navCap">
+      <span class="nav-cap">{{ item.navCap }}</span>
+    </ng-container>
 
-      <!-- Si es un ítem de navegación -->
-      <ng-container *ngIf="!item.navCap">
-        <a
-          [routerLink]="item.route"
-          *ngIf="!item.children || item.children.length === 0"
-          class="nav-link"
-        >
-          <i-tabler *ngIf="item.iconName" [name]="item.iconName"></i-tabler>
+    <!-- Si es un ítem de navegación -->
+    <ng-container *ngIf="!item.navCap">
+      <a
+        [routerLink]="item.route"
+        *ngIf="!item.children || item.children.length === 0"
+        class="nav-link"
+      >
+        <i-tabler *ngIf="item.iconName" [name]="item.iconName"></i-tabler>
+        {{ item.displayName }}
+      </a>
+
+      <!-- Si el ítem tiene hijos -->
+      <div *ngIf="item.children && item.children.length > 0" class="nav-group">
+        <span class="nav-group-title mb-2">
+          <i class="fa-solid fa-bell-concierge ms-2 me-2"></i>
+          <!-- <i-tabler *ngIf="item.iconName" [name]="item.iconName"></i-tabler> -->
           {{ item.displayName }}
-        </a>
-
-        <!-- Si el ítem tiene hijos -->
-        <div *ngIf="item.children && item.children.length > 0" class="nav-group">
-          <span class="nav-group-title">
-            <i-tabler *ngIf="item.iconName" [name]="item.iconName"></i-tabler>
-            {{ item.displayName }}
-          </span>
-          <ul>
-            <li *ngFor="let child of item.children">
-              <a [routerLink]="child.route" class="nav-link">
-                {{ child.displayName }}
-              </a>
-            </li>
-          </ul>
-        </div>        
-      </ng-container>
-    </li>
-  </ul>
+        </span>
+        <ul class="mt-2">
+          <li *ngFor="let child of item.children" [ngClass]="{'unconfirmed-item': child.isHeader}">
+            <a [routerLink]="child.route" class="nav-link">
+              {{ child.displayName }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+  </li>
+</ul>
 </nav>

@@ -6,10 +6,10 @@ import { MaterialModule } from 'src/app/material.module';
 import { NavService } from 'src/app/services/nav.service';
 import { NavItem } from './nav-item/nav-item';
 import { RouterModule } from '@angular/router';
-import { baseNavItems } from './sidebar-data'; // Importa la configuración base
+import { baseNavItems } from './sidebar-data';
 import { MenuUpdateService } from 'src/app/services/menu-update.service';
 import { ChangeDetectorRef } from '@angular/core';
-import { UserDataService } from 'src/app/services/user-data.service'; // Importar el servicio
+import { UserDataService } from 'src/app/services/user-data.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,6 +25,7 @@ import { UserDataService } from 'src/app/services/user-data.service'; // Importa
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
+  adminTableHtml: string = ''; 
   bannerImage: string = '';
   @Input() showToggle = true;
   @Output() toggleMobileNav = new EventEmitter<void>();
@@ -35,16 +36,17 @@ export class SidebarComponent implements OnInit {
   errorMessage = '';
   userRole: string | null = '';
   userId: string | null = '';
+  showAdminTable = false;
 
   constructor(
     private navService: NavService,
     private sidebarDataService: MenuUpdateService,
     private cdr: ChangeDetectorRef,
-    private userDataService: UserDataService // Inyectar el servicio
+    private userDataService: UserDataService
   ) {}
 
   ngOnInit(): void {
-    this.loadUserData();  // Cargar los datos del usuario
+    this.loadUserData();
   }
 
   private loadUserData(): void {
@@ -53,66 +55,69 @@ export class SidebarComponent implements OnInit {
       this.userRole = userData.role;
       this.userId = userData.data.id;
       console.log('User Role:', this.userRole);
-      console.log('User ID:', this.userId);
+      console.log('User ID Sidebar:', this.userId);
   
       if (this.userRole !== 'USER') {
-        // Si el rol no es 'USER', no se carga el menú y mostramos la imagen
-        this.loading = false;
-        this.bannerImage = 'assets/images/banner.png';  // Ruta de la imagen
+        this.showAdminTable = true;
       } else {
-        // Si es 'USER', cargamos el menú
+        this.showAdminTable = false;
         this.loadMenu();
       }
     } else {
       this.errorMessage = 'No se encontró información del usuario.';
       this.loading = false;
     }
-  }
-  
+  }  
 
   private loadMenu(): void {
     this.navItems = [...baseNavItems];
-    
-    // Usa el `userId` dinámicamente
-    const federationId = this.userId || '13'; // Obtén el ID del usuario de los datos
-
+    const federationId = this.userId || '13';
+  
     this.navService.getHotelsByFederation(federationId).subscribe({
       next: (hotels) => {
-        const hotelsItem = this.navItems.find(
-          (item) => item.displayName === 'Hotels'
-        );
+        const hotelsItem = this.navItems.find((item) => item.displayName === 'Hotels');
   
-        if (hotelsItem) {
-          // Crear submenú dinámico basado en los hoteles
+        if (hotels.length > 0 && hotelsItem) {
           hotelsItem.children = hotels.map((hotel) => ({
             displayName: hotel.nombre_hotel,
-            route: `/ui-components/forms/${federationId}/${hotel.id}`, // Genera la ruta dinámica
+            route: `/ui-components/forms/${federationId}/${hotel.id}`,
           }));
+        } else {
+          this.navService.confirmationHotels(federationId).subscribe({
+            next: (confirmationHotels) => {
+              if (hotelsItem) {
+                hotelsItem.children = [
+                  { displayName: 'UNCONFIRMED', isHeader: true },
+                  ...confirmationHotels.map((hotel) => ({
+                    displayName: hotel.nombre_hotel,
+                    route: '/ui-components/forms',
+                  })),
+                ];
+                this.showConfirmationList(confirmationHotels);
+              }
+            },
+            error: (error) => {
+              console.error('Error al cargar hoteles sin confirmar:', error);
+              this.errorMessage = 'No se pudo cargar los hoteles sin confirmar.';
+              this.loading = false;
+              this.cdr.detectChanges();
+            },
+          });
         }
   
-        // Actualiza el servicio compartido con los ítems del menú
         this.sidebarDataService.updateNavItems(this.navItems);
-  
-        // Fuerza la detección de cambios
         this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar los hoteles:', error);
-        this.errorMessage =
-          'No se pudo cargar los hoteles. Intente nuevamente más tarde.';
+        this.errorMessage = 'No se pudo cargar los hoteles.';
         this.loading = false;
-  
-        // Fuerza la detección de cambios
         this.cdr.detectChanges();
       },
     });
   }
-
-  // Método adicional para depuración
-  private debugUserData(): void {
-    console.log("User Data:", {
-      id: this.userId,
-      role: this.userRole
-    });
+  
+  private showConfirmationList(hotels: any[]): void {
+    console.log('Unconfirmed Hotels:', hotels);
   }
 }

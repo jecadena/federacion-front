@@ -76,3 +76,8 @@ label{
 p{
   background-color:transparent !important;
 }
+
+.custom-tooltip {
+  --bs-tooltip-bg: #ff0000;
+  --bs-tooltip-color: #ffffff;
+}

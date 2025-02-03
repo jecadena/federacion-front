@@ -7,4 +7,5 @@ export interface NavItem {
   navCap?: string;
   route?: string;
   children?: NavItem[]; // Esto es importante para los submenús
+  isHeader?: boolean;
 }

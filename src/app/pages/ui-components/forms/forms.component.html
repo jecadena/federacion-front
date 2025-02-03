@@ -107,7 +107,7 @@
       </td>
     </tr>
   </table>
-  <table *ngIf="tableVisible" class="table table-bordered">
+  <table class="table table-bordered">
     <tr style="background-color: #cecece;">
       <td class="text-left" style="border-right:1px solid #999;color: black; font-weight: 700;">HOTEL</td>
     </tr>
@@ -120,26 +120,27 @@
           style="background-color:transparent;"
           [(ngModel)]="hotelName"
           (ngModelChange)="updateFederationData()"
+          readonly
         />
       </td>
     </tr>
   </table> 
 
-  <!-- BLOQUE SINGLE  -->
-  <table *ngIf="tableVisible" class="table table-bordered mb-0">
+  <!-- BLOQUE SINGLE *ngIf="tableVisible"  -->
+  <table class="table table-bordered mb-0">
     <thead>
       <tr style="background-color: #cecece !important;">
         <td colspan="8" class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">SINGLE</td>
       </tr>
       <tr>
-        <th style="width:3%" class=" no-print"></th>
+        <th style="width:3%" class="no-print"></th>
         <th style="width:7%">N°</th>
         <th style="width:22%">Family Name</th>
         <th style="width:22%">First Name</th>
         <th style="width:17%">Pass. #</th>
         <th style="width:12%">Day of arrival</th>
         <th style="width:12%">Day of departure</th>
-        <th style="width:5%" class=" no-print"></th>
+        <th style="width:5%" class="no-print"></th>
       </tr>
     </thead>
     <tbody>
@@ -170,7 +171,7 @@
       </tr>
     </tbody>    
   </table>
-  <div *ngIf="tableVisible"
+  <div
     class="btn bg-info-subtle text-bold text-primary w-100 text-center  no-print"
     (click)="addRow()"
   >
@@ -178,7 +179,7 @@
   </div>
 
   <!-- BLOQUE DOUBLE/TWIN -->
-  <table *ngIf="tableVisible" class="table table-bordered mt-3 mb-0">
+  <table class="table table-bordered mt-3 mb-0">
     <thead>
       <tr style="background-color: #cecece !important;">
         <td colspan="8" class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">DOUBLE / TWIN</td>
@@ -246,11 +247,11 @@
   </table>
   
   <!-- Botón para agregar nuevos bloques -->
-  <div *ngIf="tableVisible" class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addBlock()">
+  <div class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addBlock()">
     + ADD <strong>DOUBLE/TWIN</strong> BLOCK
   </div>
   
-  <table *ngIf="tableVisible" class="table table-bordered mt-3 mb-0">
+  <table class="table table-bordered mt-3 mb-0">
     <thead>
       <tr style="background-color: #cecece !important;">
         <td colspan="8" class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">TRIPLE</td>
@@ -333,7 +334,7 @@
     </tbody>
   </table>
   <!-- Botón para agregar nuevos bloques -->
-  <div *ngIf="tableVisible" class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addTripleBlock()">
+  <div class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addTripleBlock()">
     + ADD <strong>TRIPLE</strong> BLOCK
   </div>
 </div>

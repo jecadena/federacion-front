@@ -11,14 +11,12 @@
     <table class="table table-striped mt-3">
       <thead class="table-primary">
         <tr>
-          <th></th>
-          <th>Federación</th>
-          <th>País</th>
-          <th>Contacto</th>
-          <th>Teléfono</th>
-          <th>Email</th>
-          <th>Móvil</th>
-          <th></th>
+          <th style="width:6%"></th>
+          <th style="width:22%">Federación</th>
+          <th style="width:18">País</th>
+          <th style="width:13%">Teléfono</th>
+          <th style="width:34%">Dirección</th>
+          <th style="width:7%">Hoteles</th>
         </tr>
       </thead>
       <tbody>
@@ -27,14 +25,12 @@
             <i class="fa-solid fa-edit text-primary mx-1" (click)="editFederation(federation)"></i>
             <i class="fa-solid fa-trash text-danger mx-1" (click)="deleteFederation(federation)"></i>
           </td>
-          <td>{{ federation.n_federacion }}</td>
-          <td>{{ federation.n_country }}</td>
-          <td>{{ federation.c_person }}</td>
-          <td>{{ federation.p_number }}</td>
-          <td>{{ federation.email_address }}</td>
-          <td>{{ federation.mobile_number }}</td>
+          <td class="text-left">{{ federation.n_federacion }}</td>
+          <td class="text-left">{{ getCountryName(federation.n_country) }}</td>
+          <td class="text-left"><span style="width:60px !important;">{{ federation.n_country }}</span> {{ federation.mobile_number }}</td>
+          <td class="text-left">{{ federation.n_address }}</td>
           <td>
-            <i class="fa-solid fa-hotel text-danger" (click)="showHotels(federation.id)"></i>
+            <i ngbTooltip="Hoteles" placement="left" class="fa-solid fa-hotel text-danger" (click)="showHotels(federation.id)"></i>
           </td>          
         </tr>
       </tbody>
