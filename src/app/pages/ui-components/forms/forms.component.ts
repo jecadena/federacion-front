@@ -15,6 +15,7 @@ import { MenuUpdateService } from 'src/app/services/menu-update.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserDataService } from '../../../services/user-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import Swal from 'sweetalert2';
@@ -34,6 +35,7 @@ import Swal from 'sweetalert2';
     MatInputModule,
     MatCheckboxModule,
     MatTableModule,
+    RouterModule
   ],
   templateUrl: './forms.component.html',
   styleUrls: ['./forms.component.scss'],
@@ -251,7 +253,26 @@ export class AppFormsComponent implements OnInit {
     { name: 'Zimbabwe', code: '+263' }
   ];
 
+  formu: FormGroup;
+  hotels = [
+    'JW Marriott Hotel Lima',
+    'Hotel Belmond Miraflores Park',
+    'The Westin Lima Hotel & Convention Center',
+    'Swissôtel Lima',
+    'Hotel Pullman Lima San Isidro',
+    'Delfines Hotel & Convention Center',
+    'Radisson Hotel Decapolis Miraflores',
+    'Casa Andina Premium Miraflores',
+    'Hotel B',
+    'Hotel Estelar Miraflores',
+    'Hotel Barranco',
+    'Hotel Meliá Lima',
+    'Casa Andina Select Miraflores',
+    'Ibis Styles Lima Conquistadores',
+    'Hilton Lima Miraflores'
+  ];
   federationData: any[] = [];
+  selectedCountryCode: string = '';
   menuItems: any[] = []; // Propiedad para almacenar los ítems del menú dinámico
   selectedFederationId: string = ''; // ID de la federación seleccionada
   tableVisible: boolean = false; 
@@ -276,6 +297,7 @@ export class AppFormsComponent implements OnInit {
   hotelName: string = '';
   // Inicializa el formulario de vuelos
   flightForm: FormGroup;
+  uploadedFiles: { [key: number]: File | null } = {};
 
   constructor(
     private http: HttpClient, 
@@ -283,7 +305,8 @@ export class AppFormsComponent implements OnInit {
     private menuUpdateService: MenuUpdateService,
     private route: ActivatedRoute,
     private userDataService: UserDataService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -341,7 +364,88 @@ export class AppFormsComponent implements OnInit {
       departure_date: ['', Validators.required],
       departure_route: ['', Validators.required]
     });
+    this.formu = this.fb.group({
+      n_hotel1: [''],
+      n_hotel2: [''],
+      n_hotel3: ['']
+    });
   }
+
+  checkHotelSelection() {
+    const hotel1 = this.formu.value.n_hotel1;
+    const hotel2 = this.formu.value.n_hotel2;
+    const hotel3 = this.formu.value.n_hotel3;
+  
+    // Verifica si hay algún campo que tenga el mismo hotel que otro
+    if ((hotel1 && hotel2 && hotel1 === hotel2) || (hotel1 && hotel3 && hotel1 === hotel3) || (hotel2 && hotel3 && hotel2 === hotel3)) {
+      Swal.fire({
+        icon: 'error',
+        title: '',
+        text: 'You cannot select the same hotel in more than one field. Please try again.',
+      });
+  
+      // Resetea solo el último campo que tiene el valor duplicado
+      if (hotel1 === hotel2) {
+        this.formu.controls['n_hotel2'].setValue('');
+      } else if (hotel1 === hotel3) {
+        this.formu.controls['n_hotel3'].setValue('');
+      } else if (hotel2 === hotel3) {
+        this.formu.controls['n_hotel3'].setValue('');
+      }
+  
+      return;
+    }
+  }
+
+  submit() {
+      // Verificar si los tres campos de hotel son iguales
+      /*const hotel1 = this.formu.value.n_hotel1;
+      const hotel2 = this.formu.value.n_hotel2;
+      const hotel3 = this.formu.value.n_hotel3;
+  
+      if (hotel1 === hotel2 || hotel1 === hotel3 || hotel2 === hotel3) {
+        Swal.fire({
+          icon: 'error',
+          title: '',
+          text: 'You cannot select the same hotel in more than one field.',
+        });
+        return;
+      }*/
+  
+      if (this.formu.valid) {
+        const formData = {
+          ...this.formu.value,
+          code_country: `${this.selectedCountryCode}${this.formu.value.code_country}`,
+        };
+  
+        this.http.post('http://localhost:3000/api/federacion', formData).subscribe({
+          next: () => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Successful registration',
+              showConfirmButton: false,
+              timer: 1500,
+              toast: true,
+            }).then(() => {
+              this.router.navigate(['/authentication/login']);
+            });
+          },
+          error: () => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'An error occurred',
+              showConfirmButton: false,
+              timer: 1500,
+              toast: true,
+            }).then(() => {
+              this.router.navigate(['/authentication/login']);
+            });
+          },
+        });
+      }
+    }
   
   // Método que verifica si existen registros con el userId
   checkFederationExists(userId: any): void {
@@ -1015,18 +1119,17 @@ export class AppFormsComponent implements OnInit {
   }
 
   initializeTableRows(): void {
-    this.tableRows = [
-      {
-        id: 1,
-        familyName: '',
-        firstName: '',
-        passportNumber: '',
-        dayArrival: '',
-        dayDeparture: '',
-        tipo_habitacion: 'S',
-      },
-    ];
+    this.tableRows = [{
+      id: 1,
+      familyName: '',
+      firstName: '',
+      passportNumber: '',
+      dayArrival: '',
+      dayDeparture: '',
+      tipo_habitacion: 'S'
+    }];
     this.flightDetails[1] = this.initializeFlightDetails();
+    this.uploadedFiles[1] = null;
   }
 
   addRow(): void {
@@ -1038,20 +1141,34 @@ export class AppFormsComponent implements OnInit {
       passportNumber: '',
       dayArrival: '',
       dayDeparture: '',
-      tipo_habitacion: 'S',
+      tipo_habitacion: 'S'
     };
     this.tableRows.push(newRow);
     this.flightDetails[newId] = this.initializeFlightDetails();
+    this.uploadedFiles[newId] = null;
   }
-  /**
-   * Elimina una fila de la tabla dinámica.
-   * @param index Índice de la fila a eliminar.
-   */
+
   removeRow(index: number): void {
     if (index > -1 && index < this.tableRows.length) {
       const removedId = this.tableRows[index].id;
       this.tableRows.splice(index, 1);
       delete this.flightDetails[removedId];
+      delete this.uploadedFiles[removedId];
+    }
+  }
+
+  openFileSelector(rowId: number): void {
+    const fileInput = document.getElementById(`fileInput${rowId}`) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
+  }
+
+  onFileSelected(event: Event, rowId: number): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      this.uploadedFiles[rowId] = target.files[0];
+      console.log(`Archivo cargado en fila ${rowId}:`, target.files[0]);
     }
   }
   
@@ -1065,6 +1182,8 @@ export class AppFormsComponent implements OnInit {
       departure_airline: '',
       departure_date: '',
       departure_route: '',
+      flightNumber: '', 
+      departureTime: ''
     };
   }
   

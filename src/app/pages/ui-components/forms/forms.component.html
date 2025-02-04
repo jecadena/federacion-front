@@ -15,7 +15,50 @@
       <i class="fa-solid fa-list"></i> SAVE LIST
     </button>
   </div>
-</div>    
+</div>
+<div class="row no-print">
+  <div class="col-md-12" style="margin-top:-10px; margin-bottom:10px;">
+    <span class="text-danger"><strong> <i class="fa-solid fa-triangle-exclamation"></i> Please select one of the hotel options of your choice in preference order. Our operators will contact you to confirm your accommodation</strong></span>
+  </div>
+  <div class="col-md-12">
+    <form [formGroup]="formu" (ngSubmit)="submit()">
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label class="text-primary">Hotel 1</mat-label>
+            <mat-select formControlName="n_hotel1" (selectionChange)="checkHotelSelection()">
+              <mat-option value="">[ - Select - ]</mat-option>
+              <mat-option *ngFor="let hotel of hotels" [value]="hotel">{{ hotel }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label class="text-primary">Hotel 2</mat-label>
+            <mat-select formControlName="n_hotel2" (selectionChange)="checkHotelSelection()">
+              <mat-option value="">[ - Select - ]</mat-option>
+              <mat-option *ngFor="let hotel of hotels" [value]="hotel">{{ hotel }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-label class="text-primary">Hotel 3</mat-label>
+            <mat-select formControlName="n_hotel3" (selectionChange)="checkHotelSelection()">
+              <mat-option value="">[ - Select - ]</mat-option>
+              <mat-option *ngFor="let hotel of hotels" [value]="hotel">{{ hotel }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 d-flex align-items-center">
+          <button class="btn btn-success w-100 no-print" type="submit" style="margin-top:-20px;">
+            <i class="fa-regular fa-square-check me-3"></i> <span style="font-size:0.8rem;">SELECT HOTELS OPTIONS</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 <div class="table-responsive">
   <table class="table table-bordered">
     <tr style="background-color: #cecece;">
@@ -126,57 +169,54 @@
     </tr>
   </table> 
 
-  <!-- BLOQUE SINGLE *ngIf="tableVisible"  -->
-  <table class="table table-bordered mb-0">
-    <thead>
-      <tr style="background-color: #cecece !important;">
-        <td colspan="8" class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">SINGLE</td>
-      </tr>
-      <tr>
-        <th style="width:3%" class="no-print"></th>
-        <th style="width:7%">N°</th>
-        <th style="width:22%">Family Name</th>
-        <th style="width:22%">First Name</th>
-        <th style="width:17%">Pass. #</th>
-        <th style="width:12%">Day of arrival</th>
-        <th style="width:12%">Day of departure</th>
-        <th style="width:5%" class="no-print"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of tableRows; let i = index">
-        <td class=" no-print">
-          <a href="javascript:void(0)" (click)="removeRow(i)" title="Remove block" style="font-weight:700">
-            <i class="fa-regular fa-trash-can text-danger"></i>
-          </a>
-        </td>
-        <td><input [id]="'idSingle' + (i + 1)" type="text" class="form-control border border-0" style="background-color:transparent;" [value]="row.id" readonly/></td>
-        <td><input [id]="'familyName' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="row.familyName"/></td>
-        <td><input [id]="'firstName' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="row.firstName"/></td>
-        <td><input [id]="'passNumber' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="row.passportNumber" (ngModelChange)="passportValidate()"/></td>
-        <td><input [id]="'dayArrival' + (i + 1)" type="datetime-local" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="row.dayArrival"/></td>
-        <td><input [id]="'dayDeparture' + (i + 1)" type="datetime-local" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="row.dayDeparture"/></td>
-        <td class="no-print">
-          <a 
-            href="javascript:void(0)" 
-            class="text-danger ms-1" 
-            style="font-size:1.2rem;" 
-            (click)="openFlightModal(row)"
-            [attr.disabled]="!isFlightModalEnabled(row) ? true : null"
-            [style.pointer-events]="!isFlightModalEnabled(row) ? 'none' : 'auto'">
-            <i class="fa-solid fa-plane-circle-check" style="padding-top:10px;"></i>
-          </a>                         
-        </td>        
-        <input type="hidden" [value]="row.tipo_habitacion" />
-      </tr>
-    </tbody>    
-  </table>
-  <div
-    class="btn bg-info-subtle text-bold text-primary w-100 text-center  no-print"
-    (click)="addRow()"
-  >
-    + ADD <strong>SINGLE</strong>
-  </div>
+<!-- BLOQUE SINGLE *ngIf="tableVisible"  -->
+<table class="table table-bordered mb-0">
+  <thead>
+    <tr style="background-color: #cecece !important;">
+      <td colspan="8" class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">SINGLE</td>
+    </tr>
+    <tr>
+      <th style="width:3%" class="no-print"></th>
+      <th style="width:7%">N°</th>
+      <th style="width:20%">Family Name</th>
+      <th style="width:20%">First Name</th>
+      <th style="width:25%">Pass. #</th>
+      <th style="width:10%">Day of arrival</th>
+      <th style="width:10%">Day of departure</th>
+      <th style="width:5%" class="no-print"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of tableRows; let i = index">
+      <td class="no-print">
+        <a href="javascript:void(0)" (click)="removeRow(i)" title="Remove block" style="font-weight:700">
+          <i class="fa-regular fa-trash-can text-danger"></i>
+        </a>
+      </td>
+      <td><input [id]="'idSingle' + (i + 1)" type="text" class="form-control border border-0" style="background-color:transparent;font-size:0.8rem;" [value]="row.id" readonly/></td>
+      <td><input type="text" class="form-control border" [(ngModel)]="row.familyName" style="background-color:transparent;font-size:0.8rem;"/></td>
+      <td><input type="text" class="form-control border" [(ngModel)]="row.firstName" style="background-color:transparent;font-size:0.8rem;"/></td>
+      <td>
+        <div class="d-flex">
+          <input type="text" class="form-control border" [(ngModel)]="row.passportNumber" style="background-color:transparent;font-size:0.8rem;"/>
+          <i class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2" (click)="openFileSelector(row.id)" style="font-size:1.2rem; cursor:pointer"></i>
+          <input type="file" [id]="'fileInput' + row.id" style="display:none" (change)="onFileSelected($event, row.id)" />
+          <i class="fa-solid fa-eye text-success mt-1 ms-2" style="font-size:1.2rem; cursor:pointer"></i>
+        </div>
+      </td>
+      <td><input type="datetime-local" class="form-control border" [(ngModel)]="row.dayArrival" style="background-color:transparent;font-size:0.8rem;"/></td>
+      <td><input type="datetime-local" class="form-control border" [(ngModel)]="row.dayDeparture" style="background-color:transparent;font-size:0.8rem;"/></td>
+      <td class="no-print">
+        <a href="javascript:void(0)" class="text-danger ms-1" (click)="openFlightModal(row)">
+          <i class="fa-solid fa-plane-circle-check"></i>
+        </a>
+      </td>
+    </tr>
+  </tbody>    
+</table>
+<div class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addRow()">
+  + ADD <strong>SINGLE</strong>
+</div>
 
   <!-- BLOQUE DOUBLE/TWIN -->
   <table class="table table-bordered mt-3 mb-0">
@@ -187,11 +227,11 @@
       <tr>
         <th style="width:3%" class="no-print"></th>
         <th style="width:7%">N°</th>
-        <th style="width:22%">Family Name</th>
-        <th style="width:22%">First Name</th>
-        <th style="width:17%">Pass. #</th>
-        <th style="width:12%">Day of arrival</th>
-        <th style="width:12%">Day of departure</th>
+        <th style="width:20%">Family Name</th>
+        <th style="width:20%">First Name</th>
+        <th style="width:25%">Pass. #</th>
+        <th style="width:10%">Day of arrival</th>
+        <th style="width:10%">Day of departure</th>
         <th style="width: 5%" class="no-print"></th>
       </tr>
     </thead>
@@ -209,7 +249,14 @@
           </td>
           <td><input [id]="'familyName' + (i + 1)" type="text" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.familyName" /></td>
           <td><input [id]="'firstName' + (i + 1)" type="text" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.firstName" /></td>
-          <td><input [id]="'passNumber' + (i + 1)" type="text" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.passportNumber" (ngModelChange)="passportValidate()"/></td>
+          <td>
+            <div class="d-flex">
+              <input [id]="'passNumber' + (i + 1)" type="text" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.passportNumber" (ngModelChange)="passportValidate()"/>
+              <i class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2" (click)="openFileSelector(block.id)" style="font-size:1.2rem; cursor:pointer"></i>
+              <input type="file" [id]="'fileInput' + block.id" style="display:none" (change)="onFileSelected($event, block.id)" />
+              <i class="fa-solid fa-eye text-success mt-1 ms-2" style="font-size:1.2rem; cursor:pointer"></i>
+            </div>
+          </td>
           <td><input [id]="'dayArrival' + (i + 1)" type="datetime-local" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.dayArrival" (ngModelChange)="syncArrivalDate(i, $event)" /></td>
           <td><input [id]="'dayDeparture' + (i + 1)" type="datetime-local" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.dayDeparture" (ngModelChange)="syncDepartureDate(i, $event)" /></td>          
           <td class="no-print">
@@ -227,7 +274,14 @@
         <tr>
           <td><input [id]="'familyName2' + (i + 1)" type="text" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.familyName2" /></td>
           <td><input [id]="'firstName2' + (i + 1)" type="text" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.firstName2" /></td>
-          <td><input [id]="'passNumber2' + (i + 1)" type="text" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.passportNumber2" (ngModelChange)="passportValidate()"/></td>
+          <td>            
+            <div class="d-flex">
+              <input [id]="'passNumber2' + (i + 1)" type="text" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.passportNumber2" (ngModelChange)="passportValidate()"/>
+              <i class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2" (click)="openFileSelector(block.id)" style="font-size:1.2rem; cursor:pointer"></i>
+              <input type="file" [id]="'fileInput' + block.id" style="display:none" (change)="onFileSelected($event, block.id)" />
+              <i class="fa-solid fa-eye text-success mt-1 ms-2" style="font-size:1.2rem; cursor:pointer"></i>
+            </div>
+          </td>
           <td><input [id]="'dayArrival2' + (i + 1)" type="datetime-local" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.dayArrival2" /></td>
           <td><input [id]="'dayDeparture2' + (i + 1)" type="datetime-local" class="form-control border" style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="block.dayDeparture2" /></td>
           <td class="no-print">
@@ -259,11 +313,11 @@
       <tr>
         <th style="width:3%" class="no-print"></th>
         <th style="width:7%">N°</th>
-        <th style="width:22%">Family Name</th>
-        <th style="width:22%">First Name</th>
-        <th style="width:17%">Passport #</th>
-        <th style="width:12%">Day of arrival</th>
-        <th style="width:12%">Day of departure</th>
+        <th style="width:20%">Family Name</th>
+        <th style="width:20%">First Name</th>
+        <th style="width:25%">Passport #</th>
+        <th style="width:10%">Day of arrival</th>
+        <th style="width:10%">Day of departure</th>
         <th style="width:5%" class="no-print"></th>
       </tr>
     </thead>
@@ -279,7 +333,14 @@
           <td rowspan="3" style="vertical-align: middle;border-bottom:0px !important;"><input [id]="'idTriple' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;" [value]="tripleBlock.id"  readonly> </td>
           <td><input [id]="'familyName' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.familyName" /></td>
           <td><input [id]="'firstName' + (i + 1)" type="text" class="form-control border "style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.firstName" /></td>
-          <td><input [id]="'passNumber' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;"[(ngModel)]="tripleBlock.passportNumber" (ngModelChange)="passportValidate()"/></td>
+          <td>            
+            <div class="d-flex">
+              <input [id]="'passNumber' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;"[(ngModel)]="tripleBlock.passportNumber" (ngModelChange)="passportValidate()"/>
+              <i class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2" (click)="openFileSelector(tripleBlock.id)" style="font-size:1.2rem; cursor:pointer"></i>
+              <input type="file" [id]="'fileInput' + tripleBlock.id" style="display:none" (change)="onFileSelected($event, tripleBlock.id)" />
+              <i class="fa-solid fa-eye text-success mt-1 ms-2" style="font-size:1.2rem; cursor:pointer"></i>
+            </div>
+          </td>
           <td><input [id]="'dayArrival' + (i + 1)" type="datetime-local" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.dayArrival" (ngModelChange)="syncArrivalDateTriple(i, $event)" /></td>
           <td><input [id]="'dayDeparture' + (i + 1)" type="datetime-local" class="form-control border " style="background-color:transparent;font-size:0.8rem;"  [(ngModel)]="tripleBlock.dayDeparture" (ngModelChange)="syncDepartureDateTriple(i, $event)" /></td>
           <td class="no-print">
@@ -297,7 +358,14 @@
         <tr>
           <td><input [id]="'familyName2' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.familyName2" /></td>
           <td><input [id]="'firstName2' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.firstName2" /></td>
-          <td><input [id]="'passNumber2' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.passportNumber2" (ngModelChange)="passportValidate()"/></td>
+          <td>            
+            <div class="d-flex">
+              <input [id]="'passNumber2' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.passportNumber2" (ngModelChange)="passportValidate()"/>
+              <i class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2" (click)="openFileSelector(tripleBlock.id)" style="font-size:1.2rem; cursor:pointer"></i>
+              <input type="file" [id]="'fileInput' + tripleBlock.id" style="display:none" (change)="onFileSelected($event, tripleBlock.id)" />
+              <i class="fa-solid fa-eye text-success mt-1 ms-2" style="font-size:1.2rem; cursor:pointer"></i>
+            </div>
+          </td>
           <td><input [id]="'dayArrival2' + (i + 1)" type="datetime-local" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.dayArrival2" (ngModelChange)="syncArrivalDateTriple(i, $event)" /></td>
           <td><input [id]="'dayDeparture2' + (i + 1)" type="datetime-local" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.dayDeparture2" (ngModelChange)="syncDepartureDateTriple(i, $event)" /></td>
           <td class="no-print">
@@ -315,7 +383,14 @@
         <tr>
           <td><input [id]="'familyName3' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.familyName3" /></td>
           <td><input [id]="'firstName3' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.firstName3" /></td>
-          <td><input [id]="'passNumber3' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;"  [(ngModel)]="tripleBlock.passportNumber3" (ngModelChange)="passportValidate()"/></td>
+          <td>
+            <div class="d-flex">
+              <input [id]="'passNumber3' + (i + 1)" type="text" class="form-control border " style="background-color:transparent;font-size:0.8rem;"  [(ngModel)]="tripleBlock.passportNumber3" (ngModelChange)="passportValidate()"/>
+              <i class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2" (click)="openFileSelector(tripleBlock.id)" style="font-size:1.2rem; cursor:pointer"></i>
+              <input type="file" [id]="'fileInput' + tripleBlock.id" style="display:none" (change)="onFileSelected($event, tripleBlock.id)" />
+              <i class="fa-solid fa-eye text-success mt-1 ms-2" style="font-size:1.2rem; cursor:pointer"></i>
+            </div>
+          </td>
           <td><input [id]="'dayArrival3' + (i + 1)" type="datetime-local" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.dayArrival3" (ngModelChange)="syncArrivalDateTriple(i, $event)" /></td>
           <td><input [id]="'dayDeparture3' + (i + 1)" type="datetime-local" class="form-control border " style="background-color:transparent;font-size:0.8rem;" [(ngModel)]="tripleBlock.dayDeparture3" (ngModelChange)="syncDepartureDateTriple(i, $event)" /></td>
           <td class="no-print">
