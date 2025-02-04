@@ -30,6 +30,7 @@ export class MenuUpdateService {
   /**
    * Agrega un nuevo ítem al menú.
    * @param newNavItem Nuevo ítem de menú a agregar.
+   * @param parentDisplayName Nombre del padre donde se insertará el nuevo ítem.
    */
   addNavItem(newNavItem: NavItem, parentDisplayName: string): void {
     const currentNavItems = this.getNavItems();
@@ -44,5 +45,14 @@ export class MenuUpdateService {
   
     // Emite la actualización de los ítems del menú
     this.navItemsSubject.next([...currentNavItems]);
+  }
+
+  /**
+   * Notifica a los suscriptores que el menú debe actualizarse sin modificar su contenido.
+   */
+  notifyMenuUpdate(): void {
+    const updatedNavItems = [...this.getNavItems()]; // Clonar para disparar cambio de referencia
+    console.log('Notificando actualización del menú:', updatedNavItems);
+    this.navItemsSubject.next(updatedNavItems);
   }  
 }

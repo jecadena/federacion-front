@@ -278,20 +278,6 @@ export class AppSideRegisterComponent implements OnInit {
   }
 
   submit() {
-    // Verificar si los tres campos de hotel son iguales
-    /*const hotel1 = this.formu.value.n_hotel1;
-    const hotel2 = this.formu.value.n_hotel2;
-    const hotel3 = this.formu.value.n_hotel3;
-
-    if (hotel1 === hotel2 || hotel1 === hotel3 || hotel2 === hotel3) {
-      Swal.fire({
-        icon: 'error',
-        title: '',
-        text: 'You cannot select the same hotel in more than one field.',
-      });
-      return;
-    }*/
-
     if (this.formu.valid) {
       const formData = {
         ...this.formu.value,

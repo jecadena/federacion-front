@@ -16,6 +16,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UserDataService } from '../../../services/user-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import {FormControl} from '@angular/forms';
+import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
+import {CdkScrollable} from '@angular/cdk/scrolling';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import Swal from 'sweetalert2';
@@ -35,7 +38,8 @@ import Swal from 'sweetalert2';
     MatInputModule,
     MatCheckboxModule,
     MatTableModule,
-    RouterModule
+    RouterModule,
+    MatTooltipModule, MatCardModule, MatInputModule, MatCheckboxModule
   ],
   templateUrl: './forms.component.html',
   styleUrls: ['./forms.component.scss'],
@@ -46,6 +50,8 @@ export class AppFormsComponent implements OnInit {
   hotelId: string = '';
   federationId: string;
   hotelData: any;
+  ocultarFormularioHoteles: boolean = false;
+  modalTitle: string = '';
   displayedColumns: string[] = [
     'id',
     'title',
@@ -277,6 +283,12 @@ export class AppFormsComponent implements OnInit {
   selectedFederationId: string = ''; // ID de la federación seleccionada
   tableVisible: boolean = false; 
   tableRows: any[] = [];
+  rowImages: { [key: string]: string } = {};
+  blockImages: { [key: string]: string } = {};
+  tripleImages: { [key: string]: string } = {};
+  blockImages2: { [key: string]: string } = {};
+  tripleImages2: { [key: string]: string } = {};
+  tripleImages3: { [key: string]: string } = {};
   tablaFilas: any[] = [];
   flightDetails: { [key: number]: any } = {};
   flightDetailsDouble: { [key: number]: any } = {};
@@ -294,6 +306,9 @@ export class AppFormsComponent implements OnInit {
   phoneNumber: string = '';
   emailAddress: string = '';
   mobileNumber: string = '';
+  n_hotel1: string = '';
+  n_hotel2: string = '';
+  n_hotel3: string = '';
   hotelName: string = '';
   // Inicializa el formulario de vuelos
   flightForm: FormGroup;
@@ -398,54 +413,69 @@ export class AppFormsComponent implements OnInit {
   }
 
   submit() {
-      // Verificar si los tres campos de hotel son iguales
-      /*const hotel1 = this.formu.value.n_hotel1;
-      const hotel2 = this.formu.value.n_hotel2;
-      const hotel3 = this.formu.value.n_hotel3;
+    if (this.formu.valid && this.federationId) {
+      Swal.fire({
+        title: 'Do you want to save your hotel preference?',
+        text: 'Once saved, you cannot modify them unless you contact the administrator. Remember that hotels are listed in order of priority.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'SAVE',
+        cancelButtonText: 'CANCEL',
+        width: "60%",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const formData = {
+            id: this.federationId,
+            n_hotel1: this.formu.value.n_hotel1,
+            n_hotel2: this.formu.value.n_hotel2,
+            n_hotel3: this.formu.value.n_hotel3,
+          };
   
-      if (hotel1 === hotel2 || hotel1 === hotel3 || hotel2 === hotel3) {
-        Swal.fire({
-          icon: 'error',
-          title: '',
-          text: 'You cannot select the same hotel in more than one field.',
-        });
-        return;
-      }*/
+          this.http.post('http://localhost:3000/api/updateFederationHotels', formData).subscribe({
+            next: (response: any) => {
+              console.log('Respuesta del servidor:', response);
   
-      if (this.formu.valid) {
-        const formData = {
-          ...this.formu.value,
-          code_country: `${this.selectedCountryCode}${this.formu.value.code_country}`,
-        };
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Successful registration',
+                showConfirmButton: false,
+                timer: 1500,
+                toast: true,
+              }).then(() => {
+                this.router.navigate(['/ui-components/forms']);
+              });
   
-        this.http.post('http://localhost:3000/api/federacion', formData).subscribe({
-          next: () => {
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'Successful registration',
-              showConfirmButton: false,
-              timer: 1500,
-              toast: true,
-            }).then(() => {
-              this.router.navigate(['/authentication/login']);
-            });
-          },
-          error: () => {
-            Swal.fire({
-              position: 'top-end',
-              icon: 'error',
-              title: 'An error occurred',
-              showConfirmButton: false,
-              timer: 1500,
-              toast: true,
-            }).then(() => {
-              this.router.navigate(['/authentication/login']);
-            });
-          },
-        });
-      }
+              this.formu.controls['n_hotel1'].disable();
+              this.formu.controls['n_hotel2'].disable();
+              this.formu.controls['n_hotel3'].disable();
+              this.fetchFederationData();
+  
+              // Actualizar el menú después de grabar los hoteles
+              this.menuUpdateService.updateNavItems([...this.menuUpdateService.getNavItems()]);
+            },
+            error: (error) => {
+              console.error('Error al actualizar los hoteles:', error);
+  
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'An error occurred',
+                showConfirmButton: false,
+                timer: 1500,
+                toast: true,
+              });
+            },
+          });
+        } else {
+          console.log('El usuario canceló la operación.');
+        }
+      });
+    } else {
+      console.error('El formulario no es válido o falta el ID de la federación.');
     }
+  }
   
   // Método que verifica si existen registros con el userId
   checkFederationExists(userId: any): void {
@@ -478,61 +508,56 @@ export class AppFormsComponent implements OnInit {
     );
   }  
   
-  exportPDF() {
+  async exportPDF() {
     const content = document.getElementById('pdfContent');
-
     if (!content) {
       console.error("No se encontró el contenido a exportar");
       return;
     }
-
     // Ocultar botones antes de la captura
     const elementsToHide = content.querySelectorAll('.no-print');
     elementsToHide.forEach(el => (el as HTMLElement).style.display = 'none');
-
     // Quitar bordes y hacer fondo transparente en inputs, selects y textareas
     const formElements = content.querySelectorAll('input, select, textarea');
     formElements.forEach(el => {
         (el as HTMLElement).style.border = '0';
         (el as HTMLElement).style.background = 'transparent';
     });
-
     const pdf = new jsPDF('p', 'mm', 'a4');
     let yPosition = 10; // Posición inicial en la página
-    const pageHeight = 287; // Altura de la página A4 (297mm - margen)
+    const pageHeight = 287; // Altura útil de la página A4
     const margin = 10;
-
-    // Convertir cada sección en una imagen y agregarla al PDF
     const elements = Array.from(content.children); // Obtener cada elemento dentro del div
-    const processElement = (index: number) => {
-        if (index >= elements.length) {
-            // Restaurar visibilidad de los botones después de la captura
-            elementsToHide.forEach(el => (el as HTMLElement).style.display = '');
-            pdf.save('reporte.pdf');
-            return;
+    const processElement = async (index: number) => {
+      if (index >= elements.length) {
+        // Restaurar visibilidad de los botones después de la captura
+        elementsToHide.forEach(el => (el as HTMLElement).style.display = '');
+        pdf.save('reporte.pdf');
+        return;
+      }
+      const element = elements[index] as HTMLElement;
+      try {
+        const canvas = await html2canvas(element, { scale: 1.5, useCORS: true });
+        const imgData = canvas.toDataURL('image/png');
+        if (!imgData || imgData === 'data:,') {
+          throw new Error("Error al generar la imagen del elemento.");
         }
-
-        const element = elements[index] as HTMLElement;
-        html2canvas(element, { scale: 2 }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const imgWidth = 190; // Margen de 10mm a cada lado
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-            // Si el elemento no cabe en la página, pasarlo a la siguiente
-            if (yPosition + imgHeight > pageHeight) {
-                pdf.addPage();
-                yPosition = margin; // Reiniciar la posición
-            }
-
-            pdf.addImage(imgData, 'PNG', margin, yPosition, imgWidth, imgHeight);
-            yPosition += imgHeight + 5; // Espacio entre elementos
-
-            processElement(index + 1);
-        });
+        const imgWidth = 190; // Margen de 10mm a cada lado
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        // Si el elemento no cabe en la página, agregar nueva página
+        if (yPosition + imgHeight > pageHeight) {
+          pdf.addPage();
+          yPosition = margin; // Reiniciar la posición
+        }
+        pdf.addImage(imgData, 'PNG', margin, yPosition, imgWidth, imgHeight);
+        yPosition += imgHeight + 5; // Espacio entre elementos
+        await processElement(index + 1);
+      } catch (error) {
+        console.error('Error al procesar elemento para PDF:', error);
+      }
     };
-
-    processElement(0);
-  }
+    await processElement(0);
+  }  
 
     isFlightModalEnabled(row: any): boolean {
       return row.familyName && row.firstName ? true : false;
@@ -852,38 +877,49 @@ export class AppFormsComponent implements OnInit {
     }
 
 
-    fetchFederationData(): void {
-      if (this.federationId) {
-        this.http
-          .get<any>(`http://localhost:3000/api/getFederationData/${this.federationId}`)
-          .subscribe(
-            (data) => {
-              this.federationData = data;
-              console.log('Datos de la federación obtenidos:', data);
-              this.federationName = data.n_federacion;
-              this.contactPerson = data.c_person;
-              this.phoneNumber = data.p_number;
-              this.emailAddress = data.email_address;
-              this.mobileNumber = data.mobile_number;
-    
-              // Aquí estamos comparando el código con el arreglo countries
-              const countryCode = data.n_country;  // Se asume que 'n_country' es el código del país
-              const countryObj = this.countries.find((country) => country.code === countryCode);
-    
-              if (countryObj) {
-                this.country = countryObj.name;  // Asignamos el nombre del país
-              } else {
-                this.country = 'Desconocido';  // Si no encontramos el código, asignamos un valor por defecto
-              }
-            },
-            (error) => {
-              console.error('Error al obtener datos de la federación', error);
+  fetchFederationData(): void {
+    if (this.federationId) {
+      this.http
+        .get<any>(`http://localhost:3000/api/getFederationData/${this.federationId}`)
+        .subscribe(
+          (data) => {
+            this.federationData = data;
+            console.log('Datos de la federación obtenidos:', data);
+            this.federationName = data.n_federacion;
+            this.contactPerson = data.c_person;
+            this.phoneNumber = data.p_number;
+            this.emailAddress = data.email_address;
+            this.mobileNumber = data.mobile_number;
+            
+            // Asignar valores al formulario
+            this.formu.patchValue({
+              n_hotel1: data.n_hotel1,
+              n_hotel2: data.n_hotel2,
+              n_hotel3: data.n_hotel3
+            });
+  
+            // Ocultar el formulario si ya hay hoteles seleccionados
+            this.ocultarFormularioHoteles = !!(data.n_hotel1 || data.n_hotel2 || data.n_hotel3);
+  
+            // Deshabilitar los selects si alguna opción tiene un valor distinto de vacío
+            if (this.ocultarFormularioHoteles) {
+              this.formu.controls['n_hotel1'].disable();
+              this.formu.controls['n_hotel2'].disable();
+              this.formu.controls['n_hotel3'].disable();
             }
-          );
-      } else {
-        console.error('El ID de la federación es obligatorio.');
-      }
-    }    
+  
+            // Buscar el nombre del país
+            const countryObj = this.countries.find(country => country.code === data.n_country);
+            this.country = countryObj ? countryObj.name : 'Desconocido';
+          },
+          (error) => {
+            console.error('Error al obtener datos de la federación', error);
+          }
+        );
+    } else {
+      console.error('El ID de la federación es obligatorio.');
+    }
+  }       
 
   fetchHotelData(): void {
     if (this.federationId && this.hotelId) {
@@ -914,7 +950,6 @@ export class AppFormsComponent implements OnInit {
       email_address: this.emailAddress,
       mobile_number: this.mobileNumber,
     };
-  
     this.http.post('http://localhost:3000/api/updateFederationData', federationDataToUpdate).subscribe(
       (response) => {
         console.log('Federación actualizada correctamente:', response);
@@ -1164,14 +1199,210 @@ export class AppFormsComponent implements OnInit {
     }
   }
 
-  onFileSelected(event: Event, rowId: number): void {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      this.uploadedFiles[rowId] = target.files[0];
-      console.log(`Archivo cargado en fila ${rowId}:`, target.files[0]);
+  onFileSelected(event: any, rowId: string): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        // Almacenamos la imagen como una URL de datos en base64
+        this.rowImages[rowId] = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
-  
+
+  // Método para visualizar la imagen en un modal
+  openImageModal(rowId: string, passportNumber: string): void {
+    const imageUrl = this.rowImages[rowId];
+    if (imageUrl) {
+      Swal.fire({
+        title: `Passport Number ${passportNumber}`,
+        html: `<img src="${imageUrl}" style="max-width: 100%; max-height: 400px;" />`,
+        showCloseButton: true,
+        width: '50%',
+      });
+    } else {
+      Swal.fire('No image selected', '', 'warning');
+    }
+  }
+
+  // Método para abrir el selector de archivos para un bloque
+  openFileSelectorDouble(blockId: number): void {
+    const fileInputDouble = document.getElementById(`fileInputDouble${blockId}`) as HTMLInputElement;
+    if (fileInputDouble) {
+      fileInputDouble.click();
+    }
+  }
+
+  // Método para manejar la selección de archivos y almacenar la imagen en base64
+  onFileSelectedDouble(event: any, blockId: number): void {
+    const fileDouble = event.target.files[0];
+    if (fileDouble) {
+      const readerDouble = new FileReader();
+      readerDouble.onload = (e: any) => {
+        // Almacenamos la imagen en el bloque correspondiente
+        this.blockImages[blockId] = e.target.result;
+      };
+      readerDouble.readAsDataURL(fileDouble);
+    }
+  }
+
+  // Método para mostrar la imagen en un modal
+  openImageModalDouble(blockId: number, passportNumber: string): void {
+    const imageUrlDouble = this.blockImages[blockId];
+    if (imageUrlDouble) {
+      Swal.fire({
+        title: `Passport Number ${passportNumber}`,
+        html: `<img src="${imageUrlDouble}" style="max-width: 100%; max-height: 400px;" />`,
+        showCloseButton: true,
+        width: '50%',
+      });
+    } else {
+      Swal.fire('No image selected', '', 'warning');
+    }
+  }
+
+  openFileSelectorDouble2(blockId: number): void {
+    const fileInputDouble2 = document.getElementById(`fileInputDouble2${blockId}`) as HTMLInputElement;
+    if (fileInputDouble2) {
+      fileInputDouble2.click();
+    }
+  }
+
+  // Método para manejar la selección de archivos y almacenar la imagen en base64
+  onFileSelectedDouble2(event: any, blockId: number): void {
+    const fileDouble2 = event.target.files[0];
+    if (fileDouble2) {
+      const readerDouble2 = new FileReader();
+      readerDouble2.onload = (e: any) => {
+        // Almacenamos la imagen en el bloque correspondiente
+        this.blockImages2[blockId] = e.target.result;
+      };
+      readerDouble2.readAsDataURL(fileDouble2);
+    }
+  }
+
+  // Método para mostrar la imagen en un modal
+  openImageModalDouble2(blockId: number, passportNumber: string): void {
+    const imageUrlDouble2 = this.blockImages2[blockId];
+    if (imageUrlDouble2) {
+      Swal.fire({
+        title: `Passport Number ${passportNumber}`,
+        html: `<img src="${imageUrlDouble2}" style="max-width: 100%; max-height: 400px;" />`,
+        showCloseButton: true,
+        width: '50%',
+      });
+    } else {
+      Swal.fire('No image selected', '', 'warning');
+    }
+  }
+
+  // Método para abrir el selector de archivos para un bloque
+  openFileSelectorTriple(blockId: number): void {
+    const fileInputTriple = document.getElementById(`fileInputTriple${blockId}`) as HTMLInputElement;
+    if (fileInputTriple) {
+      fileInputTriple.click();
+    }
+  }
+
+  // Método para manejar la selección de archivos y almacenar la imagen en base64
+  onFileSelectedTriple(event: any, blockId: number): void {
+    const fileTriple = event.target.files[0];
+    if (fileTriple) {
+      const readerTriple = new FileReader();
+      readerTriple.onload = (e: any) => {
+        // Almacenamos la imagen en el bloque correspondiente
+        this.tripleImages[blockId] = e.target.result;
+      };
+      readerTriple.readAsDataURL(fileTriple);
+    }
+  }
+
+  // Método para mostrar la imagen en un modal
+  openImageModalTriple(blockId: number, passportNumber: string): void {
+    const imageUrlTriple = this.tripleImages[blockId];
+    if (imageUrlTriple) {
+      Swal.fire({
+        title: `Passport Number ${passportNumber}`,
+        html: `<img src="${imageUrlTriple}" style="max-width: 100%; max-height: 400px;" />`,
+        showCloseButton: true,
+        width: '50%',
+      });
+    } else {
+      Swal.fire('No image selected', '', 'warning');
+    }
+  }
+
+  openFileSelectorTriple2(blockId: number): void {
+    const fileInputTriple2 = document.getElementById(`fileInputTriple2${blockId}`) as HTMLInputElement;
+    if (fileInputTriple2) {
+      fileInputTriple2.click();
+    }
+  }
+
+  // Método para manejar la selección de archivos y almacenar la imagen en base64
+  onFileSelectedTriple2(event: any, blockId: number): void {
+    const fileTriple2 = event.target.files[0];
+    if (fileTriple2) {
+      const readerTriple2 = new FileReader();
+      readerTriple2.onload = (e: any) => {
+        // Almacenamos la imagen en el bloque correspondiente
+        this.tripleImages2[blockId] = e.target.result;
+      };
+      readerTriple2.readAsDataURL(fileTriple2);
+    }
+  }
+
+  // Método para mostrar la imagen en un modal
+  openImageModalTriple2(blockId: number, passportNumber: string): void {
+    const imageUrlTriple2 = this.tripleImages2[blockId];
+    if (imageUrlTriple2) {
+      Swal.fire({
+        title: `Passport Number ${passportNumber}`,
+        html: `<img src="${imageUrlTriple2}" style="max-width: 100%; max-height: 400px;" />`,
+        showCloseButton: true,
+        width: '50%',
+      });
+    } else {
+      Swal.fire('No image selected', '', 'warning');
+    }
+  }
+
+  openFileSelectorTriple3(blockId: number): void {
+    const fileInputTriple3 = document.getElementById(`fileInputTriple3${blockId}`) as HTMLInputElement;
+    if (fileInputTriple3) {
+      fileInputTriple3.click();
+    }
+  }
+
+  // Método para manejar la selección de archivos y almacenar la imagen en base64
+  onFileSelectedTriple3(event: any, blockId: number): void {
+    const fileTriple3 = event.target.files[0];
+    if (fileTriple3) {
+      const readerTriple3 = new FileReader();
+      readerTriple3.onload = (e: any) => {
+        // Almacenamos la imagen en el bloque correspondiente
+        this.tripleImages3[blockId] = e.target.result;
+      };
+      readerTriple3.readAsDataURL(fileTriple3);
+    }
+  }
+
+  // Método para mostrar la imagen en un modal
+  openImageModalTriple3(blockId: number, passportNumber: string): void {
+    const imageUrlTriple3 = this.tripleImages3[blockId];
+    if (imageUrlTriple3) {
+      Swal.fire({
+        title: `Passport Number ${passportNumber}`,
+        html: `<img src="${imageUrlTriple3}" style="max-width: 100%; max-height: 400px;" />`,
+        showCloseButton: true,
+        width: '50%',
+      });
+    } else {
+      Swal.fire('No image selected', '', 'warning');
+    }
+  }
+
   initializeFlightDetails() {
     return {
       arrival_flight_number: '',

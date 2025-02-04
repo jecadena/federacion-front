@@ -60,7 +60,7 @@
         </span>
         <ul class="mt-2">
           <li *ngFor="let child of item.children" [ngClass]="{'unconfirmed-item': child.isHeader}">
-            <a [routerLink]="child.route" class="nav-link">
+            <a [routerLink]="child.route" class="nav-link mt-1 mb-1">
               {{ child.displayName }}
             </a>
           </li>
