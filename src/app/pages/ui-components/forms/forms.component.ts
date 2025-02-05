@@ -283,6 +283,9 @@ export class AppFormsComponent implements OnInit {
   selectedFederationId: string = ''; // ID de la federación seleccionada
   tableVisible: boolean = false; 
   tableRows: any[] = [];
+  singleRows: any[] = [];
+  doubleRows: any[] = [];
+  tripleRows: any[] = [];
   rowImages: { [key: string]: string } = {};
   blockImages: { [key: string]: string } = {};
   tripleImages: { [key: string]: string } = {};
@@ -340,6 +343,10 @@ export class AppFormsComponent implements OnInit {
     this.initializeContactBlocks();
     this.initializeTableBlocks();
     this.initializeTripleRows();
+
+    this.initializeSingleRow();
+    this.initializeDoubleRow();
+    this.initializeTripleRow();
     // Intentar obtener el ID desde el servicio compartido
     this.userDataService.userData$.subscribe((data) => {
       this.userData = data;
@@ -413,10 +420,43 @@ export class AppFormsComponent implements OnInit {
   }
 
   submit() {
+    const elhotel1 = this.formu.value.n_hotel1;
+    const elhotel2 = this.formu.value.n_hotel2;
+    const elhotel3 = this.formu.value.n_hotel3;
     if (this.formu.valid && this.federationId) {
       Swal.fire({
-        title: 'Do you want to save your hotel preference?',
-        text: 'Once saved, you cannot modify them unless you contact the administrator. Remember that hotels are listed in order of priority.',
+        title: '',
+        html: `
+              <h6>Do you want to save your hotel preference?</h6>
+              Once saved, you <strong>can't modify them</strong> unless you contact your administrator.
+              Remember, the hotels you have chosen are listed in order of priority.<br><br>
+              <table class="table table-sm table-striped w-70">
+                <tr *ngIf="${elhotel1} !== ''">
+                  <td style="width:10%" class="table-primary-subtle">
+                    1.
+                  </td>
+                  <td class="text-left">
+                    ${elhotel1}
+                  </td>
+                </tr>
+                <tr *ngIf="${elhotel2} !== ''">
+                  <td style="width:10%" class="table-primary-subtle">
+                    2.
+                  </td>
+                  <td class="text-left">
+                    ${elhotel2}
+                  </td>
+                </tr>
+                <tr *ngIf="${elhotel3} !== ''">
+                  <td style="width:10%" class="table-primary-subtle">
+                    3.
+                  </td>
+                  <td class="text-left">
+                    ${elhotel3}
+                  </td>
+                </tr>
+              </table>
+              `,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'SAVE',
@@ -1151,6 +1191,87 @@ export class AppFormsComponent implements OnInit {
       this.setFormData(this.federationData[0]);
     }
     console.log('Formulario cancelado y restablecido a los valores iniciales');
+  }
+
+  initializeSingleRow(): void {
+    this.singleRows = [{
+      id: 1,
+      singleRooms: '',
+      checkIn: '',
+      checkOut: '',
+    }];
+  }
+
+  addSingleRow(): void {
+    const newId = this.singleRows.length + 1;
+    const newRow = {
+      id: newId,
+      singleRooms: '',
+      checkIn: '',
+      checkOut: '',
+    };
+    this.singleRows = [...this.singleRows, newRow]; // Se crea una nueva referencia para detectar cambios
+  }
+
+  removeSingleRow(index: number): void {
+    if (index > -1 && index < this.singleRows.length) {
+      this.singleRows.splice(index, 1);
+      this.singleRows = [...this.singleRows]; // Se crea una nueva referencia para actualizar la vista
+    }
+  }
+
+  initializeDoubleRow(): void {
+    this.doubleRows = [{
+      id: 1,
+      doubleRooms: '',
+      checkIn: '',
+      checkOut: '',
+    }];
+  }
+
+  addDoubleRow(): void {
+    const newId = this.doubleRows.length + 1;
+    const newRow = {
+      id: newId,
+      doubleRooms: '',
+      checkIn: '',
+      checkOut: '',
+    };
+    this.doubleRows = [...this.doubleRows, newRow]; // Se crea una nueva referencia para detectar cambios
+  }
+
+  removeDoubleRow(index: number): void {
+    if (index > -1 && index < this.doubleRows.length) {
+      this.doubleRows.splice(index, 1);
+      this.doubleRows = [...this.doubleRows]; // Se crea una nueva referencia para actualizar la vista
+    }
+  }
+
+  initializeTripleRow(): void {
+    this.tripleRows = [{
+      id: 1,
+      tripleRooms: '',
+      checkIn: '',
+      checkOut: '',
+    }];
+  }
+
+  addTripleRow(): void {
+    const newId = this.tripleRows.length + 1;
+    const newRow = {
+      id: newId,
+      tripleRooms: '',
+      checkIn: '',
+      checkOut: '',
+    };
+    this.tripleRows = [...this.tripleRows, newRow]; // Se crea una nueva referencia para detectar cambios
+  }
+
+  removeTripleRow(index: number): void {
+    if (index > -1 && index < this.tripleRows.length) {
+      this.tripleRows.splice(index, 1);
+      this.tripleRows = [...this.tripleRows]; // Se crea una nueva referencia para actualizar la vista
+    }
   }
 
   initializeTableRows(): void {

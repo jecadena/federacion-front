@@ -156,7 +156,7 @@
   </table>
   <table class="table table-bordered">
     <tr style="background-color: #cecece;">
-      <td class="text-left" style="border-right:1px solid #999;color: black; font-weight: 700;">HOTEL</td>
+      <td class="text-left" style="color: black; font-weight: 700;">HOTEL</td>
     </tr>
     <tr>
       <td>
@@ -173,7 +173,136 @@
     </tr>
   </table> 
 
-<!-- BLOQUE SINGLE *ngIf="tableVisible"  -->
+  <table class="table table-bordered mb-0">
+    <thead>
+      <tr style="background-color: #cecece !important;">
+        <td colspan="5" class="text-left" style="background-color: #cecece !important;color: black;"><span style="font-weight: 700;">SINGLE</span> <span class="ms-2" style="font-size:0.7rem !important; font-weight: 400;">(Sign the number of rooms and the Check In and Check Out dates)</span></td>
+      </tr>
+      <tr>
+        <th style="width:10%">ID</th>
+        <th style="width:10%">Acciones</th>
+        <th style="width:20%">Rooms</th>
+        <th style="width:30%">Check In</th>
+        <th style="width:30%">Check Out</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of singleRows; let i = index">
+        <td>
+          <input [id]="'idSingle' + (i + 1)" type="text" class="form-control border-0" style="background-color:transparent;font-size:0.8rem;" [value]="row.id" readonly/>
+        </td>
+        <td class="no-print text-center">
+          <a href="javascript:void(0)" (click)="removeSingleRow(i)" title="Remove block" style="font-weight:700">
+            <i class="fa-regular fa-trash-can text-danger"></i>
+          </a>
+        </td>
+        <td>
+          <input type="text" class="form-control border" [(ngModel)]="row.singleRooms" style="background-color:transparent;font-size:0.8rem;"/>
+        </td>
+        <td>
+          <input type="datetime-local" class="form-control border" [(ngModel)]="row.checkIn" [min]="'2025-04-01T00:00'" [max]="'2025-04-30T23:59'" style="background-color:transparent;font-size:0.8rem;"/>
+        </td>
+        <td>
+          <input type="datetime-local" class="form-control border" [(ngModel)]="row.checkOut" [min]="'2025-04-01T00:00'" [max]="'2025-04-30T23:59'"style="background-color:transparent;font-size:0.8rem;"/>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <div class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addSingleRow()">
+            + ADD <strong>ROOMS</strong>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>  
+
+  <table class="table table-bordered mb-0 mt-3">
+    <thead>
+      <tr style="background-color: #cecece !important;">
+        <td colspan="5" class="text-left" style="background-color: #cecece !important;color: black; font-weight: 700;"><span style="font-weight: 700;">DOUBLE/TWINS</span> <span class="ms-2" style="font-size:0.7rem !important; font-weight: 400;">(Sign the number of rooms and the Check In and Check Out dates)</span></td>
+      </tr>
+      <tr>
+        <th style="width:10%">ID</th>
+        <th style="width:10%">Acciones</th>
+        <th style="width:20%">Rooms</th>
+        <th style="width:30%">Check In</th>
+        <th style="width:30%">Check Out</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of doubleRows; let i = index">
+        <td>
+          <input [id]="'idSingle' + (i + 1)" type="text" class="form-control border-0" style="background-color:transparent;font-size:0.8rem;" [value]="row.id" readonly/>
+        </td>
+        <td class="no-print text-center">
+          <a href="javascript:void(0)" (click)="removeDoubleRow(i)" title="Remove block" style="font-weight:700">
+            <i class="fa-regular fa-trash-can text-danger"></i>
+          </a>
+        </td>
+        <td>
+          <input type="text" class="form-control border" [(ngModel)]="row.doubleRooms" style="background-color:transparent;font-size:0.8rem;"/>
+        </td>
+        <td>
+          <input type="datetime-local" class="form-control border" [(ngModel)]="row.checkIn" [min]="'2025-04-01T00:00'" [max]="'2025-04-30T23:59'"style="background-color:transparent;font-size:0.8rem;"/>
+        </td>
+        <td>
+          <input type="datetime-local" class="form-control border" [(ngModel)]="row.checkOut" [min]="'2025-04-01T00:00'" [max]="'2025-04-30T23:59'"style="background-color:transparent;font-size:0.8rem;"/>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <div class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addDoubleRow()">
+            + ADD <strong>ROOMS</strong>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table> 
+
+  <table class="table table-bordered mb-0 mt-3">
+    <thead>
+      <tr style="background-color: #cecece !important;">
+        <td colspan="5" class="text-left" style="background-color: #cecece !important;color: black; font-weight: 700;"><span style="font-weight: 700;">TRIPLE</span> <span class="ms-2" style="font-size:0.7rem !important; font-weight: 400;">(Sign the number of rooms and the Check In and Check Out dates)</span></td>
+      </tr>
+      <tr>
+        <th style="width:10%">ID</th>
+        <th style="width:10%">Acciones</th>
+        <th style="width:20%">Rooms</th>
+        <th style="width:30%">Check In</th>
+        <th style="width:30%">Check Out</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of tripleRows; let i = index">
+        <td>
+          <input [id]="'idSingle' + (i + 1)" type="text" class="form-control border-0" style="background-color:transparent;font-size:0.8rem;" [value]="row.id" readonly/>
+        </td>
+        <td class="no-print text-center">
+          <a href="javascript:void(0)" (click)="removeTripleRow(i)" title="Remove block" style="font-weight:700">
+            <i class="fa-regular fa-trash-can text-danger"></i>
+          </a>
+        </td>
+        <td>
+          <input type="text" class="form-control border" [(ngModel)]="row.tripleRooms" style="background-color:transparent;font-size:0.8rem;"/>
+        </td>
+        <td>
+          <input type="datetime-local" class="form-control border" [(ngModel)]="row.checkIn" [min]="'2025-04-01T00:00'" [max]="'2025-04-30T23:59'"style="background-color:transparent;font-size:0.8rem;"/>
+        </td>
+        <td>
+          <input type="datetime-local" class="form-control border" [(ngModel)]="row.checkOut" [min]="'2025-04-01T00:00'" [max]="'2025-04-30T23:59'"style="background-color:transparent;font-size:0.8rem;"/>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <div class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addTripleRow()">
+            + ADD <strong>ROOMS</strong>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+<!-- BLOQUE SINGLE *ngIf="tableVisible"
 <table class="table table-bordered mb-0">
   <thead>
     <tr style="background-color: #cecece !important;">
@@ -236,24 +365,24 @@
       <td><input type="datetime-local" class="form-control border" [(ngModel)]="row.dayDeparture" style="background-color:transparent;font-size:0.8rem;"/></td>
       <td class="no-print">
         <a 
-              href="javascript:void(0)" 
-              class="text-danger ms-1" 
-              style="font-size:1.2rem;" 
-              matTooltip="Flight details"
-              (click)="openFlightModal(row)"
-              [attr.disabled]="!isFlightModalEnabled(row) ? true : null"
-              [style.pointer-events]="!isFlightModalEnabled(row) ? 'none' : 'auto'">
-              <i class="fa-solid fa-plane-circle-check"></i>
-            </a>
+          href="javascript:void(0)" 
+          class="text-danger ms-1" 
+          style="font-size:1.2rem;" 
+          matTooltip="Flight details"
+          (click)="openFlightModal(row)"
+          [attr.disabled]="!isFlightModalEnabled(row) ? true : null"
+          [style.pointer-events]="!isFlightModalEnabled(row) ? 'none' : 'auto'">
+          <i class="fa-solid fa-plane-circle-check"></i>
+        </a>
       </td>
     </tr>
-  </tbody>    
+  </tbody>
 </table>
 <div class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addRow()">
   + ADD <strong>SINGLE</strong>
-</div>
+</div>  -->
 
-<!-- BLOQUE DOUBLE/TWIN -->
+<!-- BLOQUE DOUBLE/TWIN
 <table class="table table-bordered mt-3 mb-0">
   <thead>
     <tr style="background-color: #cecece !important;">
@@ -272,7 +401,6 @@
   </thead>
   <tbody>
     <ng-container *ngFor="let block of tableBlocks; let i = index">
-      <!-- Bloque con filas -->
       <tr>
         <td rowspan="2" style="vertical-align: middle;" class="no-print">
           <a href="javascript:void(0)" (click)="removeBlock(i)" title="Remove block" style="font-weight:700">
@@ -298,6 +426,7 @@
               class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2 no-print" 
               (click)="openFileSelectorDouble(block.id)" 
               style="font-size:1.2rem; cursor:pointer"
+              [style.pointer-events]="block.passportNumber ? 'auto' : 'none'" 
               [attr.disabled]="!block.passportNumber ? true : null">
             </i>
             <input 
@@ -310,6 +439,7 @@
               class="fa-solid fa-eye text-success mt-1 ms-2 no-print" 
               (click)="openImageModalDouble(block.id, block.passportNumber)" 
               style="font-size:1.2rem; cursor:pointer"
+              [style.pointer-events]="block.passportNumber ? 'auto' : 'none'" 
               [attr.disabled]="!block.passportNumber ? true : null">
             </i>
           </div>
@@ -345,7 +475,8 @@
               class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2 no-print" 
               (click)="openFileSelectorDouble2(block.id)" 
               style="font-size:1.2rem; cursor:pointer"
-              [attr.disabled]="!block.passportNumber ? true : null">
+              [style.pointer-events]="block.passportNumber2 ? 'auto' : 'none'" 
+              [attr.disabled]="!block.passportNumber2 ? true : null">
             </i>
             <input 
               type="file" 
@@ -357,7 +488,8 @@
               class="fa-solid fa-eye text-success mt-1 ms-2 no-print" 
               (click)="openImageModalDouble2(block.id, block.passportNumber2)" 
               style="font-size:1.2rem; cursor:pointer"
-              [attr.disabled]="!block.passportNumber ? true : null">
+              [style.pointer-events]="block.passportNumber2 ? 'auto' : 'none'" 
+              [attr.disabled]="!block.passportNumber2 ? true : null">
             </i>
           </div>
         </td>
@@ -378,13 +510,11 @@
     </ng-container>
   </tbody>
 </table>
-  
-  <!-- Botón para agregar nuevos bloques -->
   <div class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addBlock()">
     + ADD <strong>DOUBLE/TWIN</strong> BLOCK
-  </div>
+  </div> -->
   
-  <!-- INICIO BLOQUE TRIPLE -->
+  <!-- INICIO BLOQUE TRIPLE
   <table class="table table-bordered mt-3 mb-0">
     <thead>
       <tr style="background-color: #cecece !important;">
@@ -402,7 +532,6 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Recorrer los bloques de filas -->
       <ng-container *ngFor="let tripleBlock of tableTripleRows; let i = index">
         <tr>
           <td rowspan="3" style="vertical-align: middle;" class="no-print">
@@ -425,18 +554,23 @@
               <i 
                 matTooltip="Upload document" 
                 class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2 no-print" 
-                (click)="openFileSelector(tripleBlock.id)" 
-                style="font-size:1.2rem; cursor:pointer">
+                (click)="openFileSelectorTriple(tripleBlock.id)" 
+                style="font-size:1.2rem; cursor:pointer"
+                [style.pointer-events]="tripleBlock.passportNumber ? 'auto' : 'none'" 
+                [attr.disabled]="!tripleBlock.passportNumber ? true : null">
               </i>
               <input 
                 type="file" 
-                [id]="'fileInput' + tripleBlock.id" 
+                [id]="'fileInputTriple' + tripleBlock.id" 
                 style="display:none" 
-                (change)="onFileSelected($event, tripleBlock.id)" />
+                (change)="onFileSelectedTriple($event, tripleBlock.id)" />
               <i 
                 matTooltip="See document" 
-                class="fa-solid fa-eye text-success mt-1 ms-2 no-print" 
-                style="font-size:1.2rem; cursor:pointer">
+                class="fa-solid fa-eye text-success mt-1 ms-2 no-print"
+                (click)="openImageModalTriple(tripleBlock.id, tripleBlock.passportNumber)" 
+                style="font-size:1.2rem; cursor:pointer"
+                [style.pointer-events]="tripleBlock.passportNumber ? 'auto' : 'none'" 
+                [attr.disabled]="!tripleBlock.passportNumber ? true : null">
               </i>
             </div>
           </td>
@@ -466,21 +600,26 @@
                 style="background-color:transparent;font-size:0.8rem;" 
                 [(ngModel)]="tripleBlock.passportNumber2" 
                 (ngModelChange)="passportValidate()"/>
-              <i 
+                <i 
                 matTooltip="Upload document" 
                 class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2 no-print" 
-                (click)="openFileSelector(tripleBlock.id)" 
-                style="font-size:1.2rem; cursor:pointer">
+                (click)="openFileSelectorTriple2(tripleBlock.id)" 
+                style="font-size:1.2rem; cursor:pointer"
+                [style.pointer-events]="tripleBlock.passportNumber2 ? 'auto' : 'none'" 
+                [attr.disabled]="!tripleBlock.passportNumber2 ? true : null">
               </i>
               <input 
                 type="file" 
-                [id]="'fileInput' + tripleBlock.id" 
+                [id]="'fileInputTriple2' + tripleBlock.id" 
                 style="display:none" 
-                (change)="onFileSelected($event, tripleBlock.id)" />
+                (change)="onFileSelectedTriple2($event, tripleBlock.id)" />
               <i 
                 matTooltip="See document" 
-                class="fa-solid fa-eye text-success mt-1 ms-2 no-print" 
-                style="font-size:1.2rem; cursor:pointer">
+                class="fa-solid fa-eye text-success mt-1 ms-2 no-print"
+                (click)="openImageModalTriple2(tripleBlock.id, tripleBlock.passportNumber2)" 
+                style="font-size:1.2rem; cursor:pointer"
+                [style.pointer-events]="tripleBlock.passportNumber2 ? 'auto' : 'none'" 
+                [attr.disabled]="!tripleBlock.passportNumber2 ? true : null">
               </i>
             </div>
           </td>
@@ -509,21 +648,26 @@
                 style="background-color:transparent;font-size:0.8rem;"  
                 [(ngModel)]="tripleBlock.passportNumber3" 
                 (ngModelChange)="passportValidate()"/>
-              <i 
+                <i 
                 matTooltip="Upload document" 
                 class="fa-solid fa-cloud-arrow-up text-danger mt-1 ms-2 no-print" 
-                (click)="openFileSelector(tripleBlock.id)" 
-                style="font-size:1.2rem; cursor:pointer">
+                (click)="openFileSelectorTriple3(tripleBlock.id)" 
+                style="font-size:1.2rem; cursor:pointer"
+                [style.pointer-events]="tripleBlock.passportNumber3 ? 'auto' : 'none'" 
+                [attr.disabled]="!tripleBlock.passportNumber3 ? true : null">
               </i>
               <input 
                 type="file" 
-                [id]="'fileInput' + tripleBlock.id" 
+                [id]="'fileInputTriple3' + tripleBlock.id" 
                 style="display:none" 
-                (change)="onFileSelected($event, tripleBlock.id)" />
+                (change)="onFileSelectedTriple3($event, tripleBlock.id)" />
               <i 
                 matTooltip="See document" 
-                class="fa-solid fa-eye text-success mt-1 ms-2 no-print" 
-                style="font-size:1.2rem; cursor:pointer">
+                class="fa-solid fa-eye text-success mt-1 ms-2 no-print"
+                (click)="openImageModalTriple3(tripleBlock.id, tripleBlock.passportNumber3)" 
+                style="font-size:1.2rem; cursor:pointer"
+                [style.pointer-events]="tripleBlock.passportNumber3 ? 'auto' : 'none'" 
+                [attr.disabled]="!tripleBlock.passportNumber3 ? true : null">
               </i>
             </div>
           </td>
@@ -544,11 +688,10 @@
       </ng-container>
     </tbody>
   </table>
-  <!-- Botón para agregar nuevos bloques -->
   <div class="btn bg-info-subtle text-bold text-primary w-100 text-center no-print" (click)="addTripleBlock()">
     + ADD <strong>TRIPLE</strong> BLOCK
   </div>
-</div>
+</div> -->
 
 <table class="table table-bordered mt-3 mb-0">
     <tr>
@@ -561,7 +704,7 @@
 
 <table class="table table-bordered mt-3 mb-0">
   <tr style="background-color: #cecece !important;">
-    <td class="text-left" style="background-color: #cecece !important;border-right:1px solid #999;color: black; font-weight: 700;">
+    <td class="text-left" style="background-color: #cecece !important;color: black; font-weight: 700;">
       Organizing Committee
     </td>
   </tr>
